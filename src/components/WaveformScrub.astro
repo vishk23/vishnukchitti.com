@@ -18,9 +18,15 @@ interface Props {
   /** Target horizontal resolution for the min-max envelope. */
   buckets?: number;
   caption?: string;
+  /**
+   * "sweep" — cursor traverses the trace continuously like a live monitor
+   * (no scroll pin; the hero default). "scrub" — GSAP-pinned scroll scrub
+   * (deep-dive pages only).
+   */
+  mode?: 'sweep' | 'scrub';
 }
 
-const { dataKey = 'ppg-hero', buckets = 1200, caption } = Astro.props;
+const { dataKey = 'ppg-hero', buckets = 1200, caption, mode = 'sweep' } = Astro.props;
 
 // --- Build-time data prep -------------------------------------------------
 const series = loadSensor(dataKey);
@@ -42,7 +48,7 @@ const points = Array.from(clip);
 const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
 ---
 
-<figure class="figure" data-waveform-scrub id={uid}>
+<figure class="figure" data-waveform-scrub data-mode={mode} id={uid}>
   <div class="scrub-stage" data-scrub-stage>
     <canvas data-scrub-canvas></canvas>
   </div>
@@ -94,13 +100,13 @@ const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
     const wglp = new WebglPlot(canvas);
 
     // Signal line.
-    const line = new WebglLine(new ColorRGBA(0.1, 0.1, 0.1, 1), points.length);
+    const line = new WebglLine(new ColorRGBA(1.0, 0.42, 0.21, 1), points.length);
     line.arrangeX(); // spread X evenly across [-1, 1]
     for (let i = 0; i < points.length; i++) line.setY(i, points[i]);
     wglp.addLine(line);
 
     // Vertical time-cursor (2-point line). Starts at the left edge.
-    const cursor = new WebglLine(new ColorRGBA(0, 0.4, 0.8, 1), 2);
+    const cursor = new WebglLine(new ColorRGBA(0.91, 0.89, 0.84, 0.9), 2);
     cursor.setY(0, -1);
     cursor.setY(1, 1);
     const setCursorX = (x: number) => {
@@ -113,17 +119,44 @@ const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
     wglp.update();
 
     if (reduceMotion) {
-      // Static figure: park the cursor at the midpoint, no pin/scrub.
+      // Static figure: park the cursor at the midpoint, no motion at all.
       setCursorX(0);
       wglp.update();
       return;
     }
 
-    // Pin the stage and scrub the cursor across [-1, 1] with scroll progress.
+    if (root.dataset.mode === 'sweep') {
+      // Live-monitor mode: the cursor traverses the full trace on its own,
+      // one pass every ~28s, paused while off-screen. No scroll pinning.
+      let running = true;
+      const passMs = 28000;
+      let start = performance.now();
+      const tick = (now: number) => {
+        if (!running) return;
+        const t = ((now - start) % passMs) / passMs;
+        setCursorX(-1 + t * 2);
+        wglp.update();
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          const wasRunning = running;
+          running = e.isIntersecting;
+          if (running && !wasRunning) {
+            start = performance.now();
+            requestAnimationFrame(tick);
+          }
+        }
+      }).observe(root);
+      return;
+    }
+
+    // Scrub mode (deep-dive pages): pin briefly and scrub with scroll.
     ScrollTrigger.create({
       trigger: root,
-      start: 'top top',
-      end: '+=100%',
+      start: 'top 25%',
+      end: '+=60%',
       pin: root.querySelector('[data-scrub-stage]') as HTMLElement,
       scrub: true,
       onUpdate: (self) => {

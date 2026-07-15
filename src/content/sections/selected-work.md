@@ -22,4 +22,3 @@ items:
     href: "/projects/mcp"
 ---
 
-noop is the flagship — it hosts the interactive waveform below.

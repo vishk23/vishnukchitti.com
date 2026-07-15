@@ -73,13 +73,14 @@ const uid = 'ct-' + Math.random().toString(36).slice(2, 8);
   import { WebglPlot, WebglLine, ColorRGBA } from 'webgl-plot';
 
   // Distinct hues for up to 6 channels.
+  // Warm instrument palette: accel = vermillion family, gyro = bone/amber family.
   const COLORS: [number, number, number][] = [
-    [0.85, 0.2, 0.2],
-    [0.2, 0.6, 0.2],
-    [0.2, 0.4, 0.85],
-    [0.8, 0.5, 0.1],
-    [0.6, 0.2, 0.7],
-    [0.1, 0.6, 0.6],
+    [1.0, 0.42, 0.21],
+    [0.95, 0.6, 0.35],
+    [0.85, 0.32, 0.18],
+    [0.91, 0.89, 0.84],
+    [0.72, 0.68, 0.6],
+    [0.98, 0.78, 0.45],
   ];
 
   function initToggle(root: HTMLElement) {
