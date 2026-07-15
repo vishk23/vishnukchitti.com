@@ -1,0 +1,172 @@
+{
+ "source": "noop-cloud MCP sleep_summary (deviceId my-whoop-noop, WHOOP), per-sleep-session avg HRV",
+ "metric": "hrv_rmssd_ms",
+ "note": "avgHrv is RMSSD in ms, computed from beat-to-beat R-R intervals. SDNN is not served by the cloud mirror (avgSdnn column empty), so it is omitted rather than fabricated.",
+ "night_count": 20,
+ "range_iso": [
+  "2026-06-27T04:09:02Z",
+  "2026-07-14T08:29:00Z"
+ ],
+ "sessions": [
+  {
+   "start_iso": "2026-06-27T04:09:02Z",
+   "start_unix": 1782533342,
+   "rmssd_ms": 108.36,
+   "resting_hr_bpm": 49,
+   "efficiency": 0.657,
+   "duration_min": 564
+  },
+  {
+   "start_iso": "2026-06-28T04:08:47Z",
+   "start_unix": 1782619727,
+   "rmssd_ms": 98.94,
+   "resting_hr_bpm": 56,
+   "efficiency": 0.64,
+   "duration_min": 197
+  },
+  {
+   "start_iso": "2026-06-28T07:50:28Z",
+   "start_unix": 1782633028,
+   "rmssd_ms": 105.69,
+   "resting_hr_bpm": 51,
+   "efficiency": 0.53,
+   "duration_min": 314
+  },
+  {
+   "start_iso": "2026-06-29T06:36:02Z",
+   "start_unix": 1782714962,
+   "rmssd_ms": 106.27,
+   "resting_hr_bpm": 51,
+   "efficiency": 0.597,
+   "duration_min": 311
+  },
+  {
+   "start_iso": "2026-06-30T04:16:47Z",
+   "start_unix": 1782793007,
+   "rmssd_ms": 103.72,
+   "resting_hr_bpm": 50,
+   "efficiency": 0.573,
+   "duration_min": 479
+  },
+  {
+   "start_iso": "2026-07-01T02:32:09Z",
+   "start_unix": 1782873129,
+   "rmssd_ms": 89.69,
+   "resting_hr_bpm": 56,
+   "efficiency": 0.365,
+   "duration_min": 125
+  },
+  {
+   "start_iso": "2026-07-01T04:57:39Z",
+   "start_unix": 1782881859,
+   "rmssd_ms": 98.32,
+   "resting_hr_bpm": 49,
+   "efficiency": 0.579,
+   "duration_min": 172
+  },
+  {
+   "start_iso": "2026-07-02T04:59:05Z",
+   "start_unix": 1782968345,
+   "rmssd_ms": 99.41,
+   "resting_hr_bpm": 50,
+   "efficiency": 0.957,
+   "duration_min": 138
+  },
+  {
+   "start_iso": "2026-07-02T07:35:57Z",
+   "start_unix": 1782977757,
+   "rmssd_ms": 105.45,
+   "resting_hr_bpm": 52,
+   "efficiency": 0.738,
+   "duration_min": 297
+  },
+  {
+   "start_iso": "2026-07-03T09:58:47Z",
+   "start_unix": 1783072727,
+   "rmssd_ms": 92.9,
+   "resting_hr_bpm": 54,
+   "efficiency": 0.908,
+   "duration_min": 81
+  },
+  {
+   "start_iso": "2026-07-03T11:41:52Z",
+   "start_unix": 1783078912,
+   "rmssd_ms": 91.18,
+   "resting_hr_bpm": 57,
+   "efficiency": 0.964,
+   "duration_min": 144
+  },
+  {
+   "start_iso": "2026-07-04T09:41:46Z",
+   "start_unix": 1783158106,
+   "rmssd_ms": 112.19,
+   "resting_hr_bpm": 46,
+   "efficiency": 0.732,
+   "duration_min": 271
+  },
+  {
+   "start_iso": "2026-07-04T14:34:11Z",
+   "start_unix": 1783175651,
+   "rmssd_ms": 99.21,
+   "resting_hr_bpm": 50,
+   "efficiency": 0.61,
+   "duration_min": 122
+  },
+  {
+   "start_iso": "2026-07-10T07:08:15Z",
+   "start_unix": 1783667295,
+   "rmssd_ms": 83.84,
+   "resting_hr_bpm": 55,
+   "efficiency": 0.481,
+   "duration_min": 185
+  },
+  {
+   "start_iso": "2026-07-10T10:29:07Z",
+   "start_unix": 1783679347,
+   "rmssd_ms": 80.86,
+   "resting_hr_bpm": 59,
+   "efficiency": 0.955,
+   "duration_min": 77
+  },
+  {
+   "start_iso": "2026-07-11T06:51:01Z",
+   "start_unix": 1783752661,
+   "rmssd_ms": 84.64,
+   "resting_hr_bpm": 58,
+   "efficiency": 0.646,
+   "duration_min": 383
+  },
+  {
+   "start_iso": "2026-07-12T08:15:40Z",
+   "start_unix": 1783844140,
+   "rmssd_ms": 80.05,
+   "resting_hr_bpm": 59,
+   "efficiency": 0.557,
+   "duration_min": 423
+  },
+  {
+   "start_iso": "2026-07-13T08:17:53Z",
+   "start_unix": 1783930673,
+   "rmssd_ms": 72.47,
+   "resting_hr_bpm": 54,
+   "efficiency": 0.496,
+   "duration_min": 385
+  },
+  {
+   "start_iso": "2026-07-14T07:16:04Z",
+   "start_unix": 1784013364,
+   "rmssd_ms": 92.7,
+   "resting_hr_bpm": 55,
+   "efficiency": 0.807,
+   "duration_min": 67
+  },
+  {
+   "start_iso": "2026-07-14T08:29:00Z",
+   "start_unix": 1784017740,
+   "rmssd_ms": 94.08,
+   "resting_hr_bpm": 47,
+   "efficiency": 0.641,
+   "duration_min": 364
+  }
+ ]
+}

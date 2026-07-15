@@ -5,23 +5,29 @@ Raw sensor recordings live here as JSON and are consumed **at build time** by
 bytes reach the browser, so a multi-megabyte recording ships as a small
 display-sized envelope.
 
-## Expected files
+## Files
 
-Real recordings arrive later. Expected keys (filename without `.json`):
+All five real captures are present (real WHOOP sensor data — see
+`PROVENANCE.md` for how each was extracted and its privacy footprint):
 
-| File                | Purpose                        | Channels                    |
-| ------------------- | ------------------------------ | --------------------------- |
-| `ppg-hero.json`     | Hero waveform scrub            | 1 (PPG)                     |
-| `imu-segment.json`  | 6-channel IMU toggle figure    | 6 (accel xyz + gyro xyz)    |
-| `hr-day.json`       | Heart-rate over a day          | 1                           |
-| `hrv-series.json`   | HRV time series                | 1                           |
-| `hypnogram.json`    | Sleep stages                   | 1 (stepped)                 |
+| File                | Purpose                        | Real shape                                    |
+| ------------------- | ------------------------------ | --------------------------------------------- |
+| `ppg-hero.json`     | Decoded optical PPG burst      | `{ primary: { segments: [{ samples }] } }`    |
+| `imu-segment.json`  | 6-channel IMU toggle figure    | `{ channel_labels[6], samples: number[][] }`  |
+| `hr-day.json`       | Heart-rate over a day          | `{ points: [{ bpm_avg, … }] }`                |
+| `hrv-series.json`   | Nightly HRV (RMSSD)            | `{ sessions: [{ rmssd_ms, … }] }`             |
+| `hypnogram.json`    | One night's sleep stages       | `{ stages: [{ start_unix, end_unix, stage }] }` |
 
-Only `ppg-hero.json` exists right now, and it is a **placeholder**
-(`"placeholder": true`, 512 synthetic samples). Replace it — and add the rest —
-when the real recordings land.
+The real captures do **not** all share one flat shape. `src/lib/sensor.ts`
+dispatches on document structure in `normalizeSensorFile` (points → hr-day,
+sessions → hrv, `primary.segments` → ppg, otherwise the flat/IMU schema), and
+the IMU file is sample-major so it is transposed to channel-major on load. The
+categorical/short figures (PPG burst, hypnogram, HRV trend) are read by the
+dedicated `loadPpgBurst` / `loadHypnogram` / `loadHrvSeries` loaders instead of
+the downsample path. `PROVENANCE.md` is repo documentation and is not rendered
+on any page.
 
-## File shape
+## Placeholder file shape (still accepted by the loader)
 
 ```jsonc
 {

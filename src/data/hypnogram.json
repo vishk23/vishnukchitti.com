@@ -1,0 +1,451 @@
+{
+ "source": "noop-cloud MCP sleep_detail (deviceId my-whoop-noop, WHOOP)",
+ "night_start_iso": "2026-06-30T04:16:47Z",
+ "night_end_iso": "2026-06-30T12:15:31Z",
+ "duration_min": 479,
+ "efficiency": 0.5734229215986631,
+ "resting_hr_bpm": 50,
+ "avg_hrv_rmssd_ms": 103.72,
+ "stage_labels": [
+  "awake",
+  "deep",
+  "light",
+  "rem"
+ ],
+ "stage_totals_min": {
+  "awake": 100.2,
+  "light": 269.0,
+  "deep": 43.5,
+  "rem": 66.0
+ },
+ "segment_count": 61,
+ "stages": [
+  {
+   "start_iso": "2026-06-30T04:16:47Z",
+   "start_unix": 1782793007,
+   "end_unix": 1782793080,
+   "duration_s": 73,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T04:18:00Z",
+   "start_unix": 1782793080,
+   "end_unix": 1782794130,
+   "duration_s": 1050,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T04:35:30Z",
+   "start_unix": 1782794130,
+   "end_unix": 1782794340,
+   "duration_s": 210,
+   "stage": "deep"
+  },
+  {
+   "start_iso": "2026-06-30T04:39:00Z",
+   "start_unix": 1782794340,
+   "end_unix": 1782794490,
+   "duration_s": 150,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T04:41:30Z",
+   "start_unix": 1782794490,
+   "end_unix": 1782794520,
+   "duration_s": 30,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T04:42:00Z",
+   "start_unix": 1782794520,
+   "end_unix": 1782795900,
+   "duration_s": 1380,
+   "stage": "deep"
+  },
+  {
+   "start_iso": "2026-06-30T05:05:00Z",
+   "start_unix": 1782795900,
+   "end_unix": 1782796050,
+   "duration_s": 150,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T05:07:30Z",
+   "start_unix": 1782796050,
+   "end_unix": 1782797160,
+   "duration_s": 1110,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T05:26:00Z",
+   "start_unix": 1782797160,
+   "end_unix": 1782797460,
+   "duration_s": 300,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T05:31:00Z",
+   "start_unix": 1782797460,
+   "end_unix": 1782797580,
+   "duration_s": 120,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T05:33:00Z",
+   "start_unix": 1782797580,
+   "end_unix": 1782797760,
+   "duration_s": 180,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T05:36:00Z",
+   "start_unix": 1782797760,
+   "end_unix": 1782799080,
+   "duration_s": 1320,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T05:58:00Z",
+   "start_unix": 1782799080,
+   "end_unix": 1782799290,
+   "duration_s": 210,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T06:01:30Z",
+   "start_unix": 1782799290,
+   "end_unix": 1782799950,
+   "duration_s": 660,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T06:12:30Z",
+   "start_unix": 1782799950,
+   "end_unix": 1782800190,
+   "duration_s": 240,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T06:16:30Z",
+   "start_unix": 1782800190,
+   "end_unix": 1782800520,
+   "duration_s": 330,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T06:22:00Z",
+   "start_unix": 1782800520,
+   "end_unix": 1782801330,
+   "duration_s": 810,
+   "stage": "deep"
+  },
+  {
+   "start_iso": "2026-06-30T06:35:30Z",
+   "start_unix": 1782801330,
+   "end_unix": 1782801420,
+   "duration_s": 90,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T06:37:00Z",
+   "start_unix": 1782801420,
+   "end_unix": 1782801780,
+   "duration_s": 360,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T06:43:00Z",
+   "start_unix": 1782801780,
+   "end_unix": 1782802920,
+   "duration_s": 1140,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T07:02:00Z",
+   "start_unix": 1782802920,
+   "end_unix": 1782803100,
+   "duration_s": 180,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T07:05:00Z",
+   "start_unix": 1782803100,
+   "end_unix": 1782803880,
+   "duration_s": 780,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T07:18:00Z",
+   "start_unix": 1782803880,
+   "end_unix": 1782804060,
+   "duration_s": 180,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T07:21:00Z",
+   "start_unix": 1782804060,
+   "end_unix": 1782804540,
+   "duration_s": 480,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T07:29:00Z",
+   "start_unix": 1782804540,
+   "end_unix": 1782804720,
+   "duration_s": 180,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T07:32:00Z",
+   "start_unix": 1782804720,
+   "end_unix": 1782805260,
+   "duration_s": 540,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T07:41:00Z",
+   "start_unix": 1782805260,
+   "end_unix": 1782805620,
+   "duration_s": 360,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T07:47:00Z",
+   "start_unix": 1782805620,
+   "end_unix": 1782805800,
+   "duration_s": 180,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T07:50:00Z",
+   "start_unix": 1782805800,
+   "end_unix": 1782806220,
+   "duration_s": 420,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T07:57:00Z",
+   "start_unix": 1782806220,
+   "end_unix": 1782807120,
+   "duration_s": 900,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T08:12:00Z",
+   "start_unix": 1782807120,
+   "end_unix": 1782807360,
+   "duration_s": 240,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T08:16:00Z",
+   "start_unix": 1782807360,
+   "end_unix": 1782807600,
+   "duration_s": 240,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T08:20:00Z",
+   "start_unix": 1782807600,
+   "end_unix": 1782807900,
+   "duration_s": 300,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T08:25:00Z",
+   "start_unix": 1782807900,
+   "end_unix": 1782808860,
+   "duration_s": 960,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T08:41:00Z",
+   "start_unix": 1782808860,
+   "end_unix": 1782809040,
+   "duration_s": 180,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T08:44:00Z",
+   "start_unix": 1782809040,
+   "end_unix": 1782809460,
+   "duration_s": 420,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T08:51:00Z",
+   "start_unix": 1782809460,
+   "end_unix": 1782809760,
+   "duration_s": 300,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T08:56:00Z",
+   "start_unix": 1782809760,
+   "end_unix": 1782809880,
+   "duration_s": 120,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T08:58:00Z",
+   "start_unix": 1782809880,
+   "end_unix": 1782809970,
+   "duration_s": 90,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T08:59:30Z",
+   "start_unix": 1782809970,
+   "end_unix": 1782810000,
+   "duration_s": 30,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T09:00:00Z",
+   "start_unix": 1782810000,
+   "end_unix": 1782811170,
+   "duration_s": 1170,
+   "stage": "rem"
+  },
+  {
+   "start_iso": "2026-06-30T09:19:30Z",
+   "start_unix": 1782811170,
+   "end_unix": 1782811470,
+   "duration_s": 300,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T09:24:30Z",
+   "start_unix": 1782811470,
+   "end_unix": 1782813000,
+   "duration_s": 1530,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T09:50:00Z",
+   "start_unix": 1782813000,
+   "end_unix": 1782813360,
+   "duration_s": 360,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T09:56:00Z",
+   "start_unix": 1782813360,
+   "end_unix": 1782814440,
+   "duration_s": 1080,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T10:14:00Z",
+   "start_unix": 1782814440,
+   "end_unix": 1782814530,
+   "duration_s": 90,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T10:15:30Z",
+   "start_unix": 1782814530,
+   "end_unix": 1782814830,
+   "duration_s": 300,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T10:20:30Z",
+   "start_unix": 1782814830,
+   "end_unix": 1782816540,
+   "duration_s": 1710,
+   "stage": "rem"
+  },
+  {
+   "start_iso": "2026-06-30T10:49:00Z",
+   "start_unix": 1782816540,
+   "end_unix": 1782817830,
+   "duration_s": 1290,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T11:10:30Z",
+   "start_unix": 1782817830,
+   "end_unix": 1782818160,
+   "duration_s": 330,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T11:16:00Z",
+   "start_unix": 1782818160,
+   "end_unix": 1782819120,
+   "duration_s": 960,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T11:32:00Z",
+   "start_unix": 1782819120,
+   "end_unix": 1782819330,
+   "duration_s": 210,
+   "stage": "deep"
+  },
+  {
+   "start_iso": "2026-06-30T11:35:30Z",
+   "start_unix": 1782819330,
+   "end_unix": 1782819420,
+   "duration_s": 90,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T11:37:00Z",
+   "start_unix": 1782819420,
+   "end_unix": 1782819810,
+   "duration_s": 390,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T11:43:30Z",
+   "start_unix": 1782819810,
+   "end_unix": 1782820140,
+   "duration_s": 330,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T11:49:00Z",
+   "start_unix": 1782820140,
+   "end_unix": 1782820230,
+   "duration_s": 90,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T11:50:30Z",
+   "start_unix": 1782820230,
+   "end_unix": 1782820260,
+   "duration_s": 30,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T11:51:00Z",
+   "start_unix": 1782820260,
+   "end_unix": 1782821160,
+   "duration_s": 900,
+   "stage": "rem"
+  },
+  {
+   "start_iso": "2026-06-30T12:06:00Z",
+   "start_unix": 1782821160,
+   "end_unix": 1782821520,
+   "duration_s": 360,
+   "stage": "awake"
+  },
+  {
+   "start_iso": "2026-06-30T12:12:00Z",
+   "start_unix": 1782821520,
+   "end_unix": 1782821550,
+   "duration_s": 30,
+   "stage": "light"
+  },
+  {
+   "start_iso": "2026-06-30T12:12:30Z",
+   "start_unix": 1782821550,
+   "end_unix": 1782821731,
+   "duration_s": 181,
+   "stage": "rem"
+  }
+ ]
+}
