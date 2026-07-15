@@ -1,18 +1,18 @@
 ---
 section: contact
 order: 4
-heading: "[[COPY: contact-heading]]"
-lede: "[[COPY: contact-lede]]"
+heading: "Let's talk."
+lede: "Boston, MA"
 items:
   - title: "Email"
-    meta: "[[COPY: contact-email]]"
-    href: "mailto:[[COPY: contact-email]]"
+    meta: "vishnukchittibhooma@gmail.com"
+    href: "mailto:vishnukchittibhooma@gmail.com"
   - title: "GitHub"
-    meta: "[[COPY: contact-github-handle]]"
-    href: "[[COPY: contact-github-url]]"
+    meta: "github.com/vishk23"
+    href: "https://github.com/vishk23"
   - title: "LinkedIn"
-    meta: "[[COPY: contact-linkedin-handle]]"
-    href: "[[COPY: contact-linkedin-url]]"
+    meta: "linkedin.com/in/vishnukchitti"
+    href: "https://www.linkedin.com/in/vishnukchitti"
 ---
 
-[[COPY: contact-body]]
+Open to backend, data-platform, and AI-adjacent engineering roles. Reach out.

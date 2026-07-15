@@ -1,6 +1,6 @@
 ---
-heading: "[[COPY: now-heading]]"
-updated: "[[COPY: now-updated-date]]"
+heading: "Now"
+updated: "2026-07-15"
 ---
 
-[[COPY: now-body]]
+Running a regional bank's data platform on Microsoft Fabric — the day job, and a deep one. Off-hours I'm decoding wearable BLE buffers for the NOOP client, sharpening arbiter's proof-audit pipeline, and living inside my own MCP tooling for health data and screen time. Open to backend, data-platform, and AI-adjacent roles. Reach out.

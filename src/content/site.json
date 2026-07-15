@@ -1,11 +1,11 @@
 [
   {
     "id": "site",
-    "title": "[[COPY: site-title]]",
-    "tagline": "[[COPY: site-tagline]]",
+    "title": "Vishnu Kchittibhooma — Backend & Data-Platform Engineer",
+    "tagline": "I build production data platforms by day and reverse-engineer sensors by night.",
     "author": "Vishnu Kchittibhooma",
-    "email": "[[COPY: contact-email]]",
-    "description": "[[COPY: site-meta-description]]",
+    "email": "vishnukchittibhooma@gmail.com",
+    "description": "Backend and data-platform engineer in Boston. I run a regional bank's 343M-row Microsoft Fabric platform and build low-level systems and AI tooling nights.",
     "nav": [
       { "label": "Home", "href": "/", "keywords": "top hero start" },
       { "label": "Selected Work", "href": "/#work", "keywords": "projects portfolio" },
