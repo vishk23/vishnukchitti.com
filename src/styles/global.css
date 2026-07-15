@@ -41,7 +41,6 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -471,4 +470,102 @@ dialog.cmdk a {
   * {
     scroll-behavior: auto !important;
   }
+}
+
+/* ── Polish pass ─────────────────────────────────────────────────────────── */
+
+/* Back link + project header meta. */
+.back-link {
+  margin: 2.2rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+}
+
+.back-link a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.back-link a:hover {
+  color: var(--signal);
+}
+
+.proj-role {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: -0.4rem 0 1.6rem;
+}
+
+.proj-summary {
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.proj-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.3rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 1.4rem 0 2.4rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.proj-meta a {
+  color: var(--signal);
+  text-decoration: none;
+}
+
+/* Figures own their internals: no editorial index styling inside panels. */
+.figure ul,
+.figure ol {
+  all: revert;
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
+  counter-reset: none;
+}
+
+.figure li {
+  all: revert;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--panel-muted);
+}
+
+.hypnogram-legend li::before {
+  content: '■ ';
+  color: var(--signal-bright);
+}
+
+.hypnogram-legend li[data-stage='awake']::before { opacity: 0.35; }
+.hypnogram-legend li[data-stage='rem']::before { opacity: 0.6; }
+.hypnogram-legend li[data-stage='light']::before { opacity: 0.8; }
+.hypnogram-legend li[data-stage='deep']::before { opacity: 1; }
+
+/* The SVG figures inherit the signal color. */
+.figure svg {
+  color: var(--signal-bright);
+}
+
+/* Scroll-story beats get room to breathe. */
+.scroll-story .beat {
+  margin: 3rem 0;
+}
+
+.scroll-story .beat > p {
+  font-size: 1.08rem;
+  max-width: 58ch;
 }

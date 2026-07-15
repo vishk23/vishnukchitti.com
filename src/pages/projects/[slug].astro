@@ -31,36 +31,22 @@ const isNoop = entry.data.slug === 'noop';
 ---
 
 <Layout title={entry.data.title} description={entry.data.summary}>
-  <p><a href="/#work">← Selected work</a></p>
+  <p class="back-link"><a href="/#work">← Selected work</a></p>
   <article>
     <h1>{entry.data.title}</h1>
-    <p class="muted">
+    <p class="proj-role">
       {entry.data.role}
       {entry.data.period && ` · ${entry.data.period}`}
     </p>
-    <p>{entry.data.summary}</p>
+    <p class="proj-summary">{entry.data.summary}</p>
 
-    {
-      entry.data.stack && (
-        <ul>
-          {entry.data.stack.map((s) => (
-            <li>{s}</li>
-          ))}
-        </ul>
-      )
-    }
-
-    {
-      entry.data.links && (
-        <p>
-          {entry.data.links.map((l) => (
-            <a href={l.href} style="margin-right:1rem">
-              {l.label}
-            </a>
-          ))}
-        </p>
-      )
-    }
+    <div class="proj-meta">
+      {entry.data.stack && entry.data.stack.map((s) => <span>{s}</span>)}
+      {
+        entry.data.links &&
+          entry.data.links.map((l) => <a href={l.href}>{l.label} ↗</a>)
+      }
+    </div>
 
     <Content />
 

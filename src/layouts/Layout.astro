@@ -14,7 +14,11 @@ interface Props {
 const { title, description } = Astro.props;
 
 const site = await getEntry('site', 'site');
-const nav = site?.data.nav ?? [];
+// Top bar carries the site sections only; per-project links live in the ⌘K
+// palette and the Selected Work index.
+const nav = (site?.data.nav ?? []).filter(
+  (item) => !item.href.startsWith('/projects/'),
+);
 const pageTitle = title ?? site?.data.title ?? 'vishk';
 const pageDesc = description ?? site?.data.description ?? '';
 ---
@@ -35,7 +39,10 @@ const pageDesc = description ?? site?.data.description ?? '';
   </head>
   <body>
     <nav class="site-nav" aria-label="Primary">
-      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a href="/">vishnu reddy kchitti</a>
+      {nav
+        .filter((item) => item.href !== '/')
+        .map((item) => <a href={item.href}>{item.label}</a>)}
       <button type="button" data-cmdk-open aria-label="Open command palette">
         ⌘K
       </button>
@@ -47,7 +54,10 @@ const pageDesc = description ?? site?.data.description ?? '';
 
     <footer class="site-footer">
       <p>
-        {site?.data.author} · <span class="copy-stub">{site?.data.tagline}</span>
+        {site?.data.author} · Boston, MA ·
+        <a href={`mailto:${site?.data.email}`}>{site?.data.email}</a> ·
+        <a href="https://github.com/vishk23">github</a> ·
+        <a href="https://www.linkedin.com/in/vishnukchitti">linkedin</a>
       </p>
     </footer>
 
