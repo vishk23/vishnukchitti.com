@@ -1,0 +1,19 @@
+# Cloudflare Workers — static assets deploy.
+#
+# The site is pure-static Astro (output: 'static'), so there is no Worker
+# script and no SSR adapter: `dist/` is uploaded as static assets and served
+# directly from Cloudflare's edge. Workers Static Assets (not Pages) is chosen
+# because it is Cloudflare's forward-looking, unified deploy surface — same
+# `wrangler deploy` path used for full Workers apps if this site later grows an
+# SSR/API route, and no separate Pages project/build config to maintain.
+#
+# Deploy (once an account + `wrangler login` exist — no secrets committed here):
+#   npm run build && npx wrangler deploy
+name = "vishk-site"
+compatibility_date = "2026-07-15"
+
+[assets]
+directory = "./dist"
+# SPA-style fallback is off: Astro emits a real 404.html and per-route
+# index.html files, so serve them as-is.
+not_found_handling = "404-page"
