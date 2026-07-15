@@ -2,23 +2,23 @@
 section: selected-work
 order: 2
 heading: "Selected work"
-lede: "Four things I built or reverse-engineered — a wearable's Bluetooth internals, a proof-audited debate engine, an open-source Mac dictation app, and my own data behind an LLM."
+lede: "An open-source wearable data stack, a dictation app I use every day, and a proof audit that returned a useful negative result."
 items:
-  - title: "noop"
-    meta: "the flagship — reverse-engineering a wearable's Bluetooth"
-    body: "13 merged PRs into a 216★ offline WHOOP client — reverse-engineering the strap's raw Bluetooth internals."
+  - title: "noop + noop-cloud"
+    meta: "the flagship — raw Bluetooth to AI agents"
+    body: "Decode the bytes off a WHOOP, check them against Oura and Apple Watch, query the result over MCP. 13 PRs merged upstream."
     href: "/projects/noop"
-  - title: "arbiter"
-    meta: "proof-audited multi-agent debate"
-    body: "Audits research-paper claims with multi-agent LLM debate plus Z3/Knuckledragger formal verification — then audits its own proofs."
-    href: "/projects/arbiter"
   - title: "rhapsode"
     meta: "open-source Mac dictation"
-    body: "Free, open-source two-way Mac dictation — cloud-fast when the network's good, on-device when it isn't, and it talks back in your own voice."
+    body: "The dictation app I used to write this page. Cloud transcription racing a local whisper.cpp fallback, with hallucination stripping backed by audio evidence."
     href: "/projects/rhapsode"
+  - title: "arbiter"
+    meta: "proof-audited LLM claims"
+    body: "82.8% of checker-passing miniF2F proofs collapse to 16.3% genuinely valid once you audit for vacuous proofs. The negative result was the point."
+    href: "/projects/arbiter"
   - title: "MCP tooling"
     meta: "noop-cloud + screencp"
-    body: "Two self-hostable MCP servers that put my own data behind Claude/ChatGPT — health metrics I can read and correct, screen time I have to talk my way past."
+    body: "Self-hostable MCP servers that put my own data behind Claude and ChatGPT — health metrics an agent can flag but never silently change, screen time I have to talk my way past."
     href: "/projects/mcp"
 ---
 

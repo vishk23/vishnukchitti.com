@@ -1,10 +1,10 @@
 ---
 slug: arbiter
 title: "arbiter — formal verification for paper claims"
-role: "Creator — open-source (~11K LOC)"
-summary: "Audits research-paper claims with multi-agent LLM debate plus Z3/Knuckledragger formal verification — then audits its own proofs."
+role: "Creator — open-source"
+summary: "82.8% of checker-passing miniF2F proofs collapse to 16.3% genuinely valid once you audit for vacuous proofs. The negative result was the point."
 stack:
-  - "Python (~11K LOC)"
+  - "Python"
   - "Z3 / Knuckledragger"
   - "Multi-provider LLM debate"
 links:
@@ -16,7 +16,7 @@ links:
 
 ## What it is
 
-An open-source tool (~11K LOC, `pip install arbiter-debate`) that points at a paper's PDF, extracts every claim, attempts machine verification of the encodable mathematical ones, and stages structured multi-agent debates across OpenAI, Anthropic, Google, and Grok to expose the gap between what a paper proves and what it claims. Includes a systems paper.
+An open-source tool (`pip install arbiter-debate`) that points at a paper's PDF, extracts every claim, attempts machine verification of the encodable mathematical ones, and stages structured multi-agent debates across OpenAI, Anthropic, Google, and Grok to expose the gap between what a paper proves and what it claims. Includes a systems paper.
 
 ## The hard part
 

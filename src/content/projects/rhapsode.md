@@ -2,7 +2,7 @@
 slug: rhapsode
 title: "rhapsode — open-source Mac dictation"
 role: "Creator — open-source macOS app"
-summary: "Free, open-source two-way Mac dictation — cloud-fast when the network's good, on-device when it isn't, and it talks back in your own voice."
+summary: "The dictation app I used to write this page. Cloud-fast when the network's good, on-device when it isn't, and it talks back in your own voice."
 stack:
   - "Swift (macOS)"
   - "Groq whisper-large-v3-turbo"

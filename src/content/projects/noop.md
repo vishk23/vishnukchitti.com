@@ -1,31 +1,34 @@
 ---
 slug: noop
-title: "noop — reverse-engineering a wearable's Bluetooth"
-role: "Open-source contributor — 13 merged PRs into ryanbr/noop"
-summary: "13 merged PRs into a 216★ offline WHOOP client — reverse-engineering the strap's raw Bluetooth internals."
+title: "Your health data, decoded and verified"
+role: "noop (13 PRs merged upstream) + noop-cloud (creator)"
+summary: "An open-source pipeline from raw Bluetooth to AI agents: decode the bytes off a WHOOP, check them against Oura and Apple Watch, query the result over MCP."
 stack:
-  - "Swift + Kotlin"
   - "BLE protocol reverse-engineering"
-  - "WHOOP 5.0/MG"
+  - "Swift + Kotlin"
+  - "MCP (Streamable HTTP)"
 links:
   - label: "13 merged PRs"
     href: "https://github.com/ryanbr/noop/pulls?q=is%3Apr+author%3Avishk23+is%3Amerged"
-  - label: "fork"
+  - label: "vishk23/noop"
     href: "https://github.com/vishk23/noop"
+  - label: "vishk23/noop-cloud"
+    href: "https://github.com/vishk23/noop-cloud"
 ---
 
 ## What it is
 
-NOOP is an offline, on-device WHOOP companion app by [@ryanbr](https://github.com/ryanbr) and contributors — your strap, your data, your machine, no cloud. I don't own the base app; I work in its sensor-protocol and analytics layers. My contribution is 13 pull requests merged into `ryanbr/noop`, concentrated where the raw bytes come off the strap and turn into physiology.
+NOOP is an offline, on-device WHOOP companion app by [@ryanbr](https://github.com/ryanbr) and contributors. I work in its sensor-protocol and analytics layers, with 13 pull requests merged upstream — not a fork nobody runs. noop-cloud is mine: a self-hostable MCP server that mirrors the health database and serves it to Claude, ChatGPT, or any agent. Together they form a bring-your-own-device health stack: strap, ring, or watch, the data stays yours, and an agent can query it over MCP instead of you exporting CSVs.
 
-## The hard part
+## The hard parts
 
-The WHOOP 5.0/MG speaks a Bluetooth Low Energy protocol nobody documents. The interesting work was decoding it from captured buffers:
+**Decoding.** The WHOOP 5.0 speaks an undocumented Bluetooth Low Energy protocol. I decoded the raw 6-axis IMU offload buffer into activity features (#455), captured the high-rate R22 deep buffers the strap uses for research-grade motion (#454), and persisted the raw optical PPG waveform so the signal survives past a single reading (#415). The IMU buffer rendered on this page streams at 100Hz — the number is the figure.
 
-- **IMU offload buffer** — decoded the raw 6-axis accelerometer/gyro offload buffer into activity features (#455), and captured the high-rate R22 deep buffers the strap uses for research-grade motion (#454).
-- **PPG waveform persistence** — persisted the WHOOP 5.0 v26 raw photoplethysmography waveform so the optical signal survives past a single reading (#415).
-- **Motion-corroborated sleep scoring** — elevated heart rate on a motionless wrist used to score as WAKE. I cross-referenced the IMU evidence so a still wrist stays asleep (#465, #402) — this is the beat you watch on the interactive visualization.
-- **Analytics and import correctness** — added Recovery Index and Activity Balance terms to the Charge score (#417), an opt-in coarse workout-type classifier (#414), and fixed a cluster of Oura import unit bugs where a 0–100 readiness score was being stored as bpm and efficiency wasn't a 0–1 fraction, across both the Swift and Kotlin codebases (#365, #368, #376). Also shipped a predictive low-battery alert (#250), Apple Health writeback for sleep stages / heart rate / workouts (#249), and a German-i18n CI fix (#303).
+**Cross-vendor verification.** No vendor is ground truth: WHOOP, Oura, and Apple measure with different sensors and different algorithms, so the work is making their signals comparable and catching when one is miscalibrated or misparsed. Nightly HRV that has to hold up night over night. Motion-corroborated sleep scoring: I only trust the heart-rate call when the IMU corroborates it, so a spike on a motionless wrist no longer scores as wake (#465, #402) — that's the beat you can watch in the figures below. And import fixes that sound trivial and were not: an Oura importer storing a 0–100 readiness score as bpm, found by corroborating Oura's numbers against the other vendors' signals, fixed across both the Swift and Kotlin codebases (#365, #368, #376).
+
+**Writeback.** Clean data flows back out: Apple Health writeback for sleep stages, heart rate, and workouts (#249), so the verified result lands in the ecosystem people already use. Plus analytics upstream: Recovery Index and Activity Balance terms in the Charge score (#417), an opt-in workout-type classifier (#414), and a predictive low-battery alert (#250).
+
+**Agent access.** noop-cloud exposes read tools and a propose/confirm/undo edit journal, split across read-only and read-write tokens. An agent can find and flag mis-scored data, but nothing changes without confirmation and nothing escapes the audit trail. The full server is its own study: [MCP tooling](/projects/mcp).
 
 ## What I'd do differently
 

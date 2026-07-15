@@ -1,19 +1,19 @@
 [
   {
     "id": "site",
-    "title": "Vishnu Kchittibhooma — Backend & Data-Platform Engineer",
-    "tagline": "I build production data platforms by day and reverse-engineer sensors by night.",
-    "author": "Vishnu Kchittibhooma",
+    "title": "Vishnu Reddy Kchitti — Backend & Data-Platform Engineer",
+    "tagline": "Backend and data-platform engineer. I build systems from zero.",
+    "author": "Vishnu Reddy Kchitti",
     "email": "vishnukchittibhooma@gmail.com",
-    "description": "Backend and data-platform engineer in Boston. I run a regional bank's 343M-row Microsoft Fabric platform and build low-level systems and AI tooling nights.",
+    "description": "Backend and data-platform engineer in Boston. I run Bristol County Savings Bank's enterprise data platform and build open-source tools that decode, verify, and serve wearable health data to AI agents.",
     "nav": [
       { "label": "Home", "href": "/", "keywords": "top hero start" },
       { "label": "Selected Work", "href": "/#work", "keywords": "projects portfolio" },
       { "label": "Experience", "href": "/#experience", "keywords": "cv career history" },
       { "label": "Contact", "href": "/#contact", "keywords": "email reach out" },
-      { "label": "noop", "href": "/projects/noop", "keywords": "project health sensor" },
-      { "label": "arbiter", "href": "/projects/arbiter", "keywords": "project" },
-      { "label": "rhapsode", "href": "/projects/rhapsode", "keywords": "project" },
+      { "label": "noop", "href": "/projects/noop", "keywords": "project health sensor whoop ble" },
+      { "label": "arbiter", "href": "/projects/arbiter", "keywords": "project z3 proofs" },
+      { "label": "rhapsode", "href": "/projects/rhapsode", "keywords": "project dictation mac" },
       { "label": "MCP servers", "href": "/projects/mcp", "keywords": "project noop-cloud screencp" },
       { "label": "Now", "href": "/now", "keywords": "current present recently" },
       { "label": "Resume", "href": "/resume", "keywords": "cv pdf download" }

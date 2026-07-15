@@ -6,7 +6,7 @@ lede: "Regulated banking, pharma R&D, and academic research — I build the data
 items:
   - title: "Bristol County Savings Bank — Data Engineer"
     meta: "Taunton, MA · May 2025 – Present"
-    body: "Designed and now run the bank's enterprise data platform zero-to-one on Microsoft Fabric — 343M+ rows, penny-perfect reconciliation, regulated-banking governance."
+    body: "Stood up and now run the bank's enterprise data platform: recommended the stack, built the orchestration, led a 3-person migration. Penny-perfect reconciliation under regulated-banking governance."
   - title: "Sorce Jobs — Software Engineer (Contract)"
     meta: "Remote / Boston, MA · February 2025 – June 2025"
     body: "Built backend pipelines and analytics for an early-stage job-matching startup, working directly with founders."
