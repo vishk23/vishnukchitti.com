@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+
+// One static page per project entry: /projects/noop, /arbiter, /rhapsode, /mcp.
+export const getStaticPaths: GetStaticPaths = async () => {
+  const projects = await getCollection('projects');
+  return projects.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+};
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title} description={entry.data.summary}>
+  <p><a href="/#work">← Selected work</a></p>
+  <article>
+    <h1>{entry.data.title}</h1>
+    <p class="muted">
+      {entry.data.role}
+      {entry.data.period && ` · ${entry.data.period}`}
+    </p>
+    <p>{entry.data.summary}</p>
+
+    {
+      entry.data.stack && (
+        <ul>
+          {entry.data.stack.map((s) => (
+            <li>{s}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      entry.data.links && (
+        <p>
+          {entry.data.links.map((l) => (
+            <a href={l.href} style="margin-right:1rem">
+              {l.label}
+            </a>
+          ))}
+        </p>
+      )
+    }
+
+    <Content />
+  </article>
+</Layout>

@@ -1,17 +1,64 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import WaveformScrub from '../components/WaveformScrub.astro';
+import ChannelToggle from '../components/ChannelToggle.astro';
+import { getCollection, render } from 'astro:content';
 
+// All homepage copy comes from the `sections` collection, ordered by `order`.
+const sections = (await getCollection('sections')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+// Section -> anchor id so the nav (/#work etc.) can target it.
+const anchorFor: Record<string, string> = {
+  hero: 'top',
+  'selected-work': 'work',
+  experience: 'experience',
+  contact: 'contact',
+};
+
+// Pre-render each section body (markdown) to a component.
+const rendered = await Promise.all(
+  sections.map(async (entry) => ({
+    entry,
+    Body: (await render(entry)).Content,
+  })),
+);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+  {
+    rendered.map(({ entry, Body }) => (
+      <section id={anchorFor[entry.data.section] ?? entry.data.section}>
+        <h2>{entry.data.heading}</h2>
+        {entry.data.lede && <p class="muted">{entry.data.lede}</p>}
+
+        {/* Proof island lives inside the hero section flow. */}
+        {entry.data.section === 'hero' && (
+          <WaveformScrub caption="[[COPY: hero-waveform-caption]]" />
+        )}
+
+        {entry.data.items && (
+          <ul>
+            {entry.data.items.map((item) => (
+              <li>
+                <strong>
+                  {item.href ? <a href={item.href}>{item.title}</a> : item.title}
+                </strong>
+                {item.meta && <span class="muted"> — {item.meta}</span>}
+                {item.body && <p>{item.body}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* IMU channel-toggle proof sits under selected work. */}
+        {entry.data.section === 'selected-work' && (
+          <ChannelToggle caption="[[COPY: work-imu-caption]]" />
+        )}
+
+        <Body />
+      </section>
+    ))
+  }
+</Layout>

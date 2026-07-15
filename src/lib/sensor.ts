@@ -7,7 +7,7 @@
 // A placeholder file (src/data/ppg-hero.json) exercises this path today.
 // -----------------------------------------------------------------------------
 
-import { z } from 'astro:content';
+import { z } from 'astro/zod';
 
 /**
  * On-disk sensor file shape. `samples` is either a flat array (single channel)

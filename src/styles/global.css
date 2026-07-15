@@ -1,0 +1,181 @@
+/* -----------------------------------------------------------------------------
+   PLACEHOLDER STYLES — intentionally minimal and neutral.
+   System fonts, black on white, no design. The real design system replaces
+   this file wholesale in a later pass. Do not invest in aesthetics here.
+   ----------------------------------------------------------------------------- */
+
+:root {
+  --fg: #111;
+  --bg: #fff;
+  --muted: #666;
+  --line: #ddd;
+  --accent: #06c;
+  --maxw: 46rem;
+  --pad: 1.25rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+main {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 2rem var(--pad) 6rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+section {
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+}
+
+section:first-of-type {
+  border-top: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Placeholder marker so unfilled [[COPY: ...]] stubs are obvious on screen. */
+.copy-stub {
+  color: #999;
+  font-style: italic;
+}
+
+.site-nav {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0.75rem var(--pad);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.site-footer {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1.5rem var(--pad);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Figure blocks for the waveform proofs. */
+.figure {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+}
+
+.figure canvas {
+  display: block;
+  width: 100%;
+  height: 180px;
+  background: #fafafa;
+}
+
+.figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.placeholder-badge {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--muted);
+  border-radius: 3px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.channel-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.channel-toggles label {
+  display: inline-flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+/* ⌘K command palette (functional only, no design). */
+dialog.cmdk {
+  padding: 0;
+  border: 1px solid var(--fg);
+  width: min(32rem, 90vw);
+  top: 15vh;
+}
+
+dialog.cmdk::backdrop {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+dialog.cmdk input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0.75rem;
+  font: inherit;
+  outline: none;
+}
+
+dialog.cmdk ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+dialog.cmdk li {
+  padding: 0.5rem 0.75rem;
+}
+
+dialog.cmdk li[aria-selected='true'] {
+  background: #eee;
+}
+
+dialog.cmdk a {
+  color: var(--fg);
+  text-decoration: none;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}

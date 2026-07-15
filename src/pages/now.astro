@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getEntry, render } from 'astro:content';
+
+const entry = await getEntry('now', 'now');
+if (!entry) throw new Error('Missing now content entry');
+const { Content } = await render(entry);
+---
+
+<Layout title="Now" description="What I'm focused on right now.">
+  <article>
+    <h1>{entry.data.heading}</h1>
+    <p class="muted">Last updated: {entry.data.updated}</p>
+    <Content />
+  </article>
+</Layout>

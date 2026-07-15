@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import CommandPalette from '../components/CommandPalette.astro';
+import { getEntry } from 'astro:content';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+
+const site = await getEntry('site', 'site');
+const nav = site?.data.nav ?? [];
+const pageTitle = title ?? site?.data.title ?? 'vishk';
+const pageDesc = description ?? site?.data.description ?? '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:type" content="website" />
+    <!-- Per-page head extras (canonical, structured data, etc.). -->
+    <slot name="head" />
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Primary">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      <button type="button" data-cmdk-open aria-label="Open command palette">
+        ⌘K
+      </button>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        {site?.data.author} · <span class="copy-stub">{site?.data.tagline}</span>
+      </p>
+    </footer>
+
+    <CommandPalette />
+  </body>
+</html>

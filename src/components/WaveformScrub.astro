@@ -1,0 +1,152 @@
+---
+// PROOF 1 — WaveformScrub.
+// A webgl-plot line rendered from a Float32Array, inside a GSAP ScrollTrigger
+// pinned section that scrubs a vertical time-cursor across the trace as you
+// scroll. Data is prepared AT BUILD TIME (loader -> downsample -> normalize),
+// so the client receives a small display-sized point array, never raw samples.
+//
+// Respects prefers-reduced-motion (static figure, no pin/scrub) and lazy-inits
+// via IntersectionObserver. Synthetic placeholder data is used until real PPG
+// lands in src/data/ppg-hero.json.
+import { loadSensor } from '../lib/sensor';
+import { minMaxDownsample, normalizeToClip } from '../lib/downsample';
+import { syntheticWaveform } from '../lib/synthetic';
+
+interface Props {
+  /** Sensor key in src/data/ (filename without .json). */
+  dataKey?: string;
+  /** Target horizontal resolution for the min-max envelope. */
+  buckets?: number;
+  caption?: string;
+}
+
+const { dataKey = 'ppg-hero', buckets = 1200, caption } = Astro.props;
+
+// --- Build-time data prep -------------------------------------------------
+const series = loadSensor(dataKey);
+let raw: Float32Array;
+let isPlaceholder: boolean;
+if (series) {
+  raw = series.channels[0];
+  isPlaceholder = series.placeholder;
+} else {
+  // No file yet — fall back to synthetic so the proof still renders.
+  raw = syntheticWaveform(2048);
+  isPlaceholder = true;
+}
+const envelope = minMaxDownsample(raw, buckets);
+const clip = normalizeToClip(envelope);
+// Plain array for JSON transport to the client island.
+const points = Array.from(clip);
+
+const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
+---
+
+<figure class="figure" data-waveform-scrub id={uid}>
+  <div class="scrub-stage" data-scrub-stage>
+    <canvas data-scrub-canvas></canvas>
+  </div>
+  <figcaption>
+    {caption ?? '[[COPY: waveform-caption]]'}
+    {
+      isPlaceholder && (
+        <span class="placeholder-badge">placeholder data</span>
+      )
+    }
+  </figcaption>
+  <script
+    type="application/json"
+    data-scrub-config
+    set:html={JSON.stringify({ points })}
+  />
+</figure>
+
+<script>
+  import { WebglPlot, WebglLine, ColorRGBA } from 'webgl-plot';
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches;
+
+  function initScrub(root: HTMLElement) {
+    const canvas = root.querySelector<HTMLCanvasElement>(
+      '[data-scrub-canvas]',
+    );
+    const cfgEl = root.querySelector<HTMLScriptElement>('[data-scrub-config]');
+    if (!canvas || !cfgEl) return;
+
+    const { points } = JSON.parse(cfgEl.textContent || '{"points":[]}') as {
+      points: number[];
+    };
+    if (points.length === 0) return;
+
+    // Size the backing store to the element's CSS box for crisp rendering.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = canvas.clientWidth || 600;
+    const cssH = canvas.clientHeight || 180;
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+
+    const wglp = new WebglPlot(canvas);
+
+    // Signal line.
+    const line = new WebglLine(new ColorRGBA(0.1, 0.1, 0.1, 1), points.length);
+    line.arrangeX(); // spread X evenly across [-1, 1]
+    for (let i = 0; i < points.length; i++) line.setY(i, points[i]);
+    wglp.addLine(line);
+
+    // Vertical time-cursor (2-point line). Starts at the left edge.
+    const cursor = new WebglLine(new ColorRGBA(0, 0.4, 0.8, 1), 2);
+    cursor.setY(0, -1);
+    cursor.setY(1, 1);
+    const setCursorX = (x: number) => {
+      cursor.setX(0, x);
+      cursor.setX(1, x);
+    };
+    setCursorX(-1);
+    wglp.addLine(cursor);
+
+    wglp.update();
+
+    if (reduceMotion) {
+      // Static figure: park the cursor at the midpoint, no pin/scrub.
+      setCursorX(0);
+      wglp.update();
+      return;
+    }
+
+    // Pin the stage and scrub the cursor across [-1, 1] with scroll progress.
+    ScrollTrigger.create({
+      trigger: root,
+      start: 'top top',
+      end: '+=100%',
+      pin: root.querySelector('[data-scrub-stage]') as HTMLElement,
+      scrub: true,
+      onUpdate: (self) => {
+        setCursorX(-1 + self.progress * 2);
+        wglp.update();
+      },
+    });
+  }
+
+  // Lazy-init each instance when it approaches the viewport.
+  const io = new IntersectionObserver(
+    (entries, obs) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          initScrub(entry.target as HTMLElement);
+          obs.unobserve(entry.target);
+        }
+      }
+    },
+    { rootMargin: '200px' },
+  );
+
+  document
+    .querySelectorAll<HTMLElement>('[data-waveform-scrub]')
+    .forEach((el) => io.observe(el));
+</script>

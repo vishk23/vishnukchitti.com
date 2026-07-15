@@ -1,0 +1,118 @@
+---
+// Dependency-free ⌘K command palette. Opens on cmd+k / ctrl+k (or the nav
+// button), fuzzy-filters the route list from the `site` collection, arrow keys
+// to move, Enter to navigate, Esc to close. Functional only — no design.
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('site', 'site');
+const routes = (site?.data.nav ?? []).map((n) => ({
+  label: n.label,
+  href: n.href,
+  keywords: n.keywords ?? '',
+}));
+---
+
+<dialog class="cmdk" data-cmdk>
+  <input
+    type="text"
+    placeholder="Jump to… (type to filter)"
+    aria-label="Command palette search"
+    data-cmdk-input
+    autocomplete="off"
+  />
+  <ul data-cmdk-list role="listbox"></ul>
+</dialog>
+
+<script is:inline define:vars={{ routes }}>
+  (() => {
+    const dialog = document.querySelector('[data-cmdk]');
+    if (!dialog) return;
+    const input = dialog.querySelector('[data-cmdk-input]');
+    const list = dialog.querySelector('[data-cmdk-list]');
+    let selected = 0;
+    let filtered = routes;
+
+    // Subsequence fuzzy match: every query char appears in order in the target.
+    function fuzzy(query, target) {
+      if (!query) return true;
+      const q = query.toLowerCase();
+      const t = target.toLowerCase();
+      let qi = 0;
+      for (let ti = 0; ti < t.length && qi < q.length; ti++) {
+        if (t[ti] === q[qi]) qi++;
+      }
+      return qi === q.length;
+    }
+
+    function render() {
+      const q = input.value.trim();
+      filtered = routes.filter(
+        (r) => fuzzy(q, r.label) || fuzzy(q, r.keywords),
+      );
+      if (selected >= filtered.length) selected = 0;
+      list.innerHTML = filtered
+        .map(
+          (r, i) =>
+            `<li role="option" aria-selected="${i === selected}">` +
+            `<a href="${r.href}">${r.label}</a></li>`,
+        )
+        .join('');
+    }
+
+    function open() {
+      if (typeof dialog.showModal === 'function' && !dialog.open) {
+        dialog.showModal();
+        input.value = '';
+        selected = 0;
+        render();
+        input.focus();
+      }
+    }
+
+    function close() {
+      if (dialog.open) dialog.close();
+    }
+
+    function go() {
+      const target = filtered[selected];
+      if (target) {
+        close();
+        window.location.href = target.href;
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const isToggle = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
+      if (isToggle) {
+        e.preventDefault();
+        dialog.open ? close() : open();
+      }
+    });
+
+    document
+      .querySelectorAll('[data-cmdk-open]')
+      .forEach((btn) => btn.addEventListener('click', open));
+
+    input.addEventListener('input', render);
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selected = Math.min(selected + 1, filtered.length - 1);
+        render();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selected = Math.max(selected - 1, 0);
+        render();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        go();
+      }
+    });
+
+    // Click on the backdrop closes.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) close();
+    });
+  })();
+</script>

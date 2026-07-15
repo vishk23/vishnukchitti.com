@@ -1,0 +1,153 @@
+---
+// PROOF 2 — ChannelToggle.
+// Six webgl-plot lines stacked in vertical bands, each with a checkbox that
+// toggles its visibility (future 6-axis IMU display). Data is prepared AT BUILD
+// TIME; the client receives downsampled point arrays only.
+//
+// Respects prefers-reduced-motion (this figure is static either way — no
+// animation) and lazy-inits via IntersectionObserver. Synthetic placeholder
+// data is used until real IMU lands in src/data/imu-segment.json.
+import { loadSensor } from '../lib/sensor';
+import { minMaxDownsample, normalizeToClip } from '../lib/downsample';
+import { syntheticChannels } from '../lib/synthetic';
+
+interface Props {
+  dataKey?: string;
+  buckets?: number;
+  caption?: string;
+}
+
+const { dataKey = 'imu-segment', buckets = 600, caption } = Astro.props;
+
+// --- Build-time data prep -------------------------------------------------
+const series = loadSensor(dataKey);
+let labels: string[];
+let rawChannels: Float32Array[];
+let isPlaceholder: boolean;
+if (series && series.channels.length >= 6) {
+  labels = series.channelLabels;
+  rawChannels = series.channels;
+  isPlaceholder = series.placeholder;
+} else {
+  const synth = syntheticChannels(2048);
+  labels = synth.labels;
+  rawChannels = synth.channels;
+  isPlaceholder = true;
+}
+
+const channels = rawChannels.map((c) =>
+  Array.from(normalizeToClip(minMaxDownsample(c, buckets))),
+);
+
+const uid = 'ct-' + Math.random().toString(36).slice(2, 8);
+---
+
+<figure class="figure" data-channel-toggle id={uid}>
+  <canvas data-ct-canvas></canvas>
+  <div class="channel-toggles" data-ct-toggles>
+    {
+      labels.map((label, i) => (
+        <label>
+          <input type="checkbox" checked data-ct-channel={i} />
+          {label}
+        </label>
+      ))
+    }
+  </div>
+  <figcaption>
+    {caption ?? '[[COPY: channel-toggle-caption]]'}
+    {
+      isPlaceholder && (
+        <span class="placeholder-badge">placeholder data</span>
+      )
+    }
+  </figcaption>
+  <script
+    type="application/json"
+    data-ct-config
+    set:html={JSON.stringify({ channels, labels })}
+  />
+</figure>
+
+<script>
+  import { WebglPlot, WebglLine, ColorRGBA } from 'webgl-plot';
+
+  // Distinct hues for up to 6 channels.
+  const COLORS: [number, number, number][] = [
+    [0.85, 0.2, 0.2],
+    [0.2, 0.6, 0.2],
+    [0.2, 0.4, 0.85],
+    [0.8, 0.5, 0.1],
+    [0.6, 0.2, 0.7],
+    [0.1, 0.6, 0.6],
+  ];
+
+  function initToggle(root: HTMLElement) {
+    const canvas = root.querySelector<HTMLCanvasElement>('[data-ct-canvas]');
+    const cfgEl = root.querySelector<HTMLScriptElement>('[data-ct-config]');
+    if (!canvas || !cfgEl) return;
+
+    const { channels } = JSON.parse(
+      cfgEl.textContent || '{"channels":[]}',
+    ) as { channels: number[][]; labels: string[] };
+    if (channels.length === 0) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = canvas.clientWidth || 600;
+    const cssH = canvas.clientHeight || 180;
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+
+    const wglp = new WebglPlot(canvas);
+    const n = channels.length;
+    // Each channel gets a vertical band of height 2/n, centered in its slot.
+    const band = 2 / n;
+    const lines: WebglLine[] = channels.map((data, ch) => {
+      const color = COLORS[ch % COLORS.length];
+      const line = new WebglLine(
+        new ColorRGBA(color[0], color[1], color[2], 1),
+        data.length,
+      );
+      line.arrangeX();
+      // Band center: top band (ch 0) sits high, last band sits low.
+      const center = 1 - band / 2 - ch * band;
+      for (let i = 0; i < data.length; i++) {
+        line.setY(i, center + (data[i] * band) / 2.2);
+      }
+      wglp.addLine(line);
+      return line;
+    });
+
+    wglp.update();
+
+    // Wire checkboxes to per-line visibility.
+    root
+      .querySelectorAll<HTMLInputElement>('[data-ct-channel]')
+      .forEach((box) => {
+        box.addEventListener('change', () => {
+          const ch = Number(box.dataset.ctChannel);
+          const line = lines[ch];
+          if (line) {
+            line.visible = box.checked;
+            wglp.update();
+          }
+        });
+      });
+  }
+
+  const io = new IntersectionObserver(
+    (entries, obs) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          initToggle(entry.target as HTMLElement);
+          obs.unobserve(entry.target);
+        }
+      }
+    },
+    { rootMargin: '200px' },
+  );
+
+  document
+    .querySelectorAll<HTMLElement>('[data-channel-toggle]')
+    .forEach((el) => io.observe(el));
+</script>

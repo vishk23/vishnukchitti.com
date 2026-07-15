@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Placeholder resume route. Real build will serve/link a generated PDF; for now
+// this is a single link stub so the route and nav entry resolve.
+const resumeHref = '[[COPY: resume-pdf-href]]';
+---
+
+<Layout title="Resume" description="Resume / CV.">
+  <article>
+    <h1>Resume</h1>
+    <p>
+      <a href={resumeHref}>[[COPY: resume-link-label]]</a>
+    </p>
+    <p class="muted">
+      Placeholder route. The real resume PDF link drops in here via the
+      <code>resume-pdf-href</code> copy key.
+    </p>
+  </article>
+</Layout>

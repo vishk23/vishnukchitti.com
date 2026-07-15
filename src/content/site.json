@@ -1,20 +1,22 @@
-{
-  "id": "site",
-  "title": "[[COPY: site-title]]",
-  "tagline": "[[COPY: site-tagline]]",
-  "author": "Vishnu Kchittibhooma",
-  "email": "[[COPY: contact-email]]",
-  "description": "[[COPY: site-meta-description]]",
-  "nav": [
-    { "label": "Home", "href": "/", "keywords": "top hero start" },
-    { "label": "Selected Work", "href": "/#work", "keywords": "projects portfolio" },
-    { "label": "Experience", "href": "/#experience", "keywords": "cv career history" },
-    { "label": "Contact", "href": "/#contact", "keywords": "email reach out" },
-    { "label": "noop", "href": "/projects/noop", "keywords": "project health sensor" },
-    { "label": "arbiter", "href": "/projects/arbiter", "keywords": "project" },
-    { "label": "rhapsode", "href": "/projects/rhapsode", "keywords": "project" },
-    { "label": "MCP servers", "href": "/projects/mcp", "keywords": "project noop-cloud screencp" },
-    { "label": "Now", "href": "/now", "keywords": "current present recently" },
-    { "label": "Resume", "href": "/resume", "keywords": "cv pdf download" }
-  ]
-}
+[
+  {
+    "id": "site",
+    "title": "[[COPY: site-title]]",
+    "tagline": "[[COPY: site-tagline]]",
+    "author": "Vishnu Kchittibhooma",
+    "email": "[[COPY: contact-email]]",
+    "description": "[[COPY: site-meta-description]]",
+    "nav": [
+      { "label": "Home", "href": "/", "keywords": "top hero start" },
+      { "label": "Selected Work", "href": "/#work", "keywords": "projects portfolio" },
+      { "label": "Experience", "href": "/#experience", "keywords": "cv career history" },
+      { "label": "Contact", "href": "/#contact", "keywords": "email reach out" },
+      { "label": "noop", "href": "/projects/noop", "keywords": "project health sensor" },
+      { "label": "arbiter", "href": "/projects/arbiter", "keywords": "project" },
+      { "label": "rhapsode", "href": "/projects/rhapsode", "keywords": "project" },
+      { "label": "MCP servers", "href": "/projects/mcp", "keywords": "project noop-cloud screencp" },
+      { "label": "Now", "href": "/now", "keywords": "current present recently" },
+      { "label": "Resume", "href": "/resume", "keywords": "cv pdf download" }
+    ]
+  }
+]
