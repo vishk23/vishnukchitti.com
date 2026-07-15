@@ -7,6 +7,6 @@ import { defineConfig } from 'astro/config';
 // so the client never parses megabytes of raw samples.
 export default defineConfig({
   output: 'static',
-  site: 'https://vishk.dev',
+  site: 'https://vishnukchitti.com',
   trailingSlash: 'ignore',
 });
