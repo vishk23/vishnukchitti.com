@@ -3,6 +3,11 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
+import WaveformScrub from '../../components/WaveformScrub.astro';
+import ChannelToggle from '../../components/ChannelToggle.astro';
+import PpgBurst from '../../components/PpgBurst.astro';
+import Hypnogram from '../../components/Hypnogram.astro';
+import HrvSeries from '../../components/HrvSeries.astro';
 
 interface Props {
   entry: CollectionEntry<'projects'>;
@@ -19,6 +24,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+// noop is the flagship deep-dive: it hosts the scroll-story that walks a strap's
+// raw BLE bytes through to shipped physiology, beside the real captured figures.
+const isNoop = entry.data.slug === 'noop';
 ---
 
 <Layout title={entry.data.title} description={entry.data.summary}>
@@ -54,5 +63,90 @@ const { Content } = await render(entry);
     }
 
     <Content />
+
+    {
+      isNoop && (
+        <section
+          class="scroll-story"
+          aria-label="How the strap's raw bytes become physiology"
+        >
+          <div class="beat" data-beat="1">
+            <p>
+              <strong>Raw bytes.</strong> The WHOOP 5.0 streams undocumented
+              Bluetooth Low Energy. What arrives is an opaque buffer of bytes —
+              no schema, no field names, no help.
+            </p>
+          </div>
+
+          <div class="beat" data-beat="2">
+            <p>
+              <strong>Finding the frame.</strong> Capture enough buffers and
+              structure emerges: fixed offsets, repeating strides. The bytes
+              resolve into signals the strap never meant to explain.
+            </p>
+          </div>
+
+          <div class="beat" data-beat="3">
+            <p>
+              <strong>The optical signal.</strong> One buffer carries the raw
+              v26 PPG — the green-light pulse of blood flow. The strap emits it
+              as a per-second burst, and I persist it past a single reading.
+            </p>
+            <PpgBurst
+              dataKey="ppg-hero"
+              caption="A single decoded 24-sample v26 optical PPG burst (24 Hz, ~1 s), decoded from WHOOP 5.0 hardware captures — the strap emits per-second bursts, not a continuous stream."
+            />
+          </div>
+
+          <div class="beat" data-beat="4">
+            <p>
+              <strong>Parsed motion.</strong> A second buffer resolves into six
+              axes of motion — the strap's own record of how the wrist moved,
+              decoded from bytes it never meant to explain.
+            </p>
+            <ChannelToggle
+              dataKey="imu-segment"
+              caption="One real second of 6-axis IMU (accelerometer + gyroscope, 100 Hz), decoded from WHOOP 5.0 hardware captures. Only one offload buffer exists — toggle any channel."
+            />
+          </div>
+
+          <div class="beat" data-beat="5">
+            <p>
+              <strong>From signal to sleep.</strong> Old scoring saw elevated
+              heart rate and called it WAKE — even on a dead-still wrist. That's
+              a false wake.
+            </p>
+          </div>
+
+          <div class="beat" data-beat="6">
+            <p>
+              <strong>Corroboration.</strong> Cross-reference the IMU: no
+              motion, no wake. A racing heart on a motionless wrist stays asleep.
+              The hypnogram gets honest.
+            </p>
+            <Hypnogram
+              dataKey="hypnogram"
+              caption="One night's sleep stages (awake / REM / light / deep) — my own WHOOP data, night of 2026-06-29→30."
+            />
+          </div>
+
+          <div class="beat" data-beat="7">
+            <p>
+              <strong>Shipped upstream.</strong> All of it lands as merged pull
+              requests in the base app — 13 of them — not a fork nobody runs.
+              Real users, real straps, real derived signals like these:
+            </p>
+            <WaveformScrub
+              dataKey="hr-day"
+              caption="A full day of my own heart rate — 1,441 real one-minute readings from 2026-06-30 (WHOOP). Scroll to scrub across the day."
+            />
+            <HrvSeries
+              dataKey="hrv-series"
+              caption="Nightly HRV (RMSSD) across 20 sleep sessions — my own WHOOP data, 2026-06-27 → 2026-07-14."
+            />
+          </div>
+        </section>
+      )
+    }
   </article>
 </Layout>

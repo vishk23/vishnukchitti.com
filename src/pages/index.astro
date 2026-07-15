@@ -35,7 +35,10 @@ const rendered = await Promise.all(
 
         {/* Proof island lives inside the hero section flow. */}
         {entry.data.section === 'hero' && (
-          <WaveformScrub caption="[[COPY: hero-waveform-caption]]" />
+          <WaveformScrub
+            dataKey="hr-day"
+            caption="A full day of my own heart rate — 1,441 real one-minute readings from 2026-06-30 (WHOOP). Scroll to scrub the time-cursor across the day."
+          />
         )}
 
         {entry.data.items && (
@@ -54,7 +57,10 @@ const rendered = await Promise.all(
 
         {/* IMU channel-toggle proof sits under selected work. */}
         {entry.data.section === 'selected-work' && (
-          <ChannelToggle caption="[[COPY: work-imu-caption]]" />
+          <ChannelToggle
+            dataKey="imu-segment"
+            caption="One real second of 6-axis motion (accelerometer + gyroscope, 100 Hz), decoded from WHOOP 5.0 hardware captures. Toggle any channel."
+          />
         )}
 
         <Body />

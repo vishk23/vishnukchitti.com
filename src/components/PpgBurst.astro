@@ -1,0 +1,70 @@
+---
+// A single decoded optical-PPG burst rendered as a static inline-SVG polyline.
+// The WHOOP straps emit a per-second 24-sample burst, not a continuous stream,
+// so this is one real ~1-second capture — not a multi-minute waveform. Prepared
+// at build time (no client JS, no WebGL). Structural markup only; the design
+// pass owns all styling.
+import { loadPpgBurst } from '../lib/sensor';
+
+interface Props {
+  dataKey?: string;
+  caption?: string;
+}
+
+const { dataKey = 'ppg-hero', caption } = Astro.props;
+
+const burst = loadPpgBurst(dataKey);
+
+const W = 600;
+const H = 160;
+const PAD = 8;
+
+let polyline = '';
+if (burst && burst.samples.length > 1) {
+  const s = burst.samples;
+  const n = s.length;
+  let min = s[0];
+  let max = s[0];
+  for (const v of s) {
+    if (v < min) min = v;
+    if (v > max) max = v;
+  }
+  const range = max - min || 1;
+  polyline = s
+    .map((v, i) => {
+      const x = PAD + (i / (n - 1)) * (W - 2 * PAD);
+      const y = PAD + (1 - (v - min) / range) * (H - 2 * PAD);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(' ');
+}
+---
+
+<figure class="figure ppg-burst" data-ppg-burst>
+  {
+    burst ? (
+      <svg
+        class="ppg-burst-svg"
+        width="100%"
+        height="180"
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        role="img"
+        aria-label="One decoded 24-sample optical PPG burst"
+      >
+        <polyline
+          points={polyline}
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+      </svg>
+    ) : (
+      <p class="figure-empty">PPG burst data unavailable.</p>
+    )
+  }
+  <figcaption>
+    {caption ??
+      'One decoded 24-sample v26 optical PPG burst (24 Hz, ~1 s), decoded from WHOOP 5.0 hardware captures.'}
+  </figcaption>
+</figure>

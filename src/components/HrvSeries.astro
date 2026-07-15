@@ -1,0 +1,82 @@
+---
+// Static HRV trend: one point per sleep session (nightly RMSSD, ms) drawn as a
+// polyline with markers. Built at build time as inline SVG — no client JS.
+// Structural markup only; the design pass owns styling.
+import { loadHrvSeries } from '../lib/sensor';
+
+interface Props {
+  dataKey?: string;
+  caption?: string;
+}
+
+const { dataKey = 'hrv-series', caption } = Astro.props;
+
+const hrv = loadHrvSeries(dataKey);
+
+const W = 600;
+const H = 160;
+const PAD = 12;
+
+interface Pt {
+  x: number;
+  y: number;
+  rmssd: number;
+}
+
+let pts: Pt[] = [];
+let polyline = '';
+if (hrv && hrv.sessions.length > 0) {
+  const vals = hrv.sessions.map((s) => s.rmssdMs);
+  const n = vals.length;
+  let min = vals[0];
+  let max = vals[0];
+  for (const v of vals) {
+    if (v < min) min = v;
+    if (v > max) max = v;
+  }
+  const range = max - min || 1;
+  pts = vals.map((v, i) => ({
+    x: PAD + (n === 1 ? 0.5 : i / (n - 1)) * (W - 2 * PAD),
+    y: PAD + (1 - (v - min) / range) * (H - 2 * PAD),
+    rmssd: v,
+  }));
+  polyline = pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+}
+---
+
+<figure class="figure hrv-series" data-hrv-series>
+  {
+    hrv ? (
+      <svg
+        class="hrv-series-svg"
+        width="100%"
+        height="180"
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        role="img"
+        aria-label="Nightly HRV (RMSSD) trend across sleep sessions"
+      >
+        <polyline
+          points={polyline}
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        />
+        {pts.map((p) => (
+          <circle
+            cx={p.x.toFixed(1)}
+            cy={p.y.toFixed(1)}
+            r="2.5"
+            fill="currentColor"
+          />
+        ))}
+      </svg>
+    ) : (
+      <p class="figure-empty">HRV data unavailable.</p>
+    )
+  }
+  <figcaption>
+    {caption ??
+      'Nightly HRV (RMSSD) across my sleep sessions — my own WHOOP data.'}
+  </figcaption>
+</figure>

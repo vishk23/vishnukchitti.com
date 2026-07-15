@@ -47,7 +47,7 @@ const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
     <canvas data-scrub-canvas></canvas>
   </div>
   <figcaption>
-    {caption ?? '[[COPY: waveform-caption]]'}
+    {caption ?? 'Scrubbed sensor waveform.'}
     {
       isPlaceholder && (
         <span class="placeholder-badge">placeholder data</span>
