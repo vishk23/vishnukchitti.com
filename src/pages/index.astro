@@ -36,8 +36,8 @@ const rendered = await Promise.all(
         {/* Proof island lives inside the hero section flow. */}
         {entry.data.section === 'hero' && (
           <WaveformScrub
-            dataKey="hr-day"
-            caption="A full day of my own heart rate — 1,441 real one-minute readings from a WHOOP strap. The cursor sweeps the day in 28 seconds; the tall spike is a workout."
+            dataKey="ppg-continuous"
+            caption="My own heartbeat, recovered from raw light — 45 seconds of the WHOOP strap's green-optical channel (25 Hz), a signal the vendor never exposes, decoded byte-by-byte. Each dip is one beat; the slow swell is breathing."
           />
         )}
 
@@ -55,11 +55,11 @@ const rendered = await Promise.all(
           </ul>
         )}
 
-        {/* IMU channel-toggle proof sits under selected work. */}
+        {/* The raw optical front-end proof sits under selected work. */}
         {entry.data.section === 'selected-work' && (
           <ChannelToggle
-            dataKey="imu-segment"
-            caption="One real second of 6-axis motion (accelerometer + gyroscope, 100 Hz), decoded from WHOOP 5.0 hardware captures. Toggle any channel."
+            dataKey="optical-channels"
+            caption="The strap's whole raw optical front-end — six channels at 25 Hz from a 2,140-byte offload buffer, decoded to the byte (my own WHOOP MG). Green and infrared carry the cardiac pulse; the dark references are the noise floor. Toggle any channel."
           />
         )}
 
