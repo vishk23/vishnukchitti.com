@@ -560,6 +560,53 @@ dialog.cmdk a {
   color: var(--signal-bright);
 }
 
+/* HR-recovery overlay: legend + accuracy line beneath the two-series trace. */
+.hr-recovery-key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  margin-top: 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--panel-muted);
+}
+
+.hr-recovery-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hr-recovery-legend .swatch {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0;
+  border-top-width: 2px;
+  border-top-style: solid;
+  margin-left: 0.6rem;
+  vertical-align: middle;
+}
+
+.hr-recovery-legend .swatch:first-child {
+  margin-left: 0;
+}
+
+.swatch-recov {
+  border-top-color: var(--signal-bright);
+}
+
+.swatch-truth {
+  border-top-color: var(--panel-ink);
+  opacity: 0.75;
+}
+
+.hr-recovery-stat {
+  color: var(--panel-ink);
+  opacity: 0.85;
+}
+
 /* Scroll-story beats get room to breathe. */
 .scroll-story .beat {
   margin: 3rem 0;

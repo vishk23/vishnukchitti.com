@@ -247,6 +247,41 @@ export function loadHypnogram(key = 'hypnogram'): HypnogramData | null {
   };
 }
 
+/**
+ * Optical-recovered heart rate against the strap's own ground-truth HR, over a
+ * single resting window. `truth` is one bpm reading per second; `recovered` is
+ * the pulse-tracker's sparser output, each tagged with its second-offset `t`.
+ */
+export interface HrRecovery {
+  startIso: string;
+  windowSeconds: number;
+  truth: number[];
+  recovered: Array<{ t: number; bpm: number }>;
+  medAbsErrBpm: number;
+  within6Pct: number;
+  hrBand: [number, number];
+}
+
+export function loadHrRecovery(key = 'hr-recovery'): HrRecovery | null {
+  const raw = rawSensorJson(key);
+  const truth = raw?.truth_bpm as number[] | undefined;
+  const recovered = raw?.recovered as Array<{ t: number; bpm: number }> | undefined;
+  if (!truth || !recovered) return null;
+  const band = (raw?.hr_band as [number, number]) ?? [
+    Math.min(...truth),
+    Math.max(...truth),
+  ];
+  return {
+    startIso: String(raw?.start_iso ?? ''),
+    windowSeconds: Number(raw?.window_seconds ?? truth.length - 1),
+    truth,
+    recovered,
+    medAbsErrBpm: Number(raw?.med_abs_err_bpm ?? 0),
+    within6Pct: Number(raw?.within6_pct ?? 0),
+    hrBand: band,
+  };
+}
+
 /** Nightly HRV (RMSSD) points across a run of sleep sessions. */
 export interface HrvPoint {
   startIso: string;

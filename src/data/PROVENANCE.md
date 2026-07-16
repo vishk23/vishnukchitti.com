@@ -12,12 +12,44 @@ is synthesized or fabricated. Timezone for all local-day reasoning: **America/Lo
 | **noop-cloud MCP mirror** (`vk-noop-cloud.fly.dev`) | Holds real `my-whoop` `hrSample`+`rrInterval` (through 2026-07-14), `my-whoop-noop` `sleepSession`, plus Oura/Apple `dailyMetric`. **Does not serve raw PPG waveform.** `imu_series` returns empty (no raw 6-axis offload for this strap). Source of `hr-day`, `hrv-series`, `hypnogram`. |
 | **Repo capture fixtures** (`Packages/WhoopProtocol/Tests/…`) | Real hardware-captured decode fixtures. **Only source of raw PPG and 6-axis IMU.** Source of `ppg-hero` and `imu-segment`. |
 
-### Raw PPG reality (important)
-A contiguous 2–5 minute raw-PPG waveform **does not exist anywhere locally**. The WHOOP straps
-emit a per-second **24-sample optical burst**, not a continuous buffer; neither the local store
-(empty) nor the cloud mirror (doesn't persist it) has a long waveform. The `ppg-hero.json` asset
-therefore uses the **real captured optical bursts** that do exist in the repo fixtures, clearly
-labeled. These are genuine ADC captures, not decimated or interpolated.
+### Raw PPG reality (updated 2026-07-16)
+The note below was true through 2026-07-15: no *contiguous* raw-PPG waveform existed anywhere,
+so `ppg-hero.json` used the real per-second **24-sample optical bursts** from the repo fixtures.
+**As of 2026-07-14 that changed.** A fresh capture from Vishnu's own WHOOP **MG** offloaded the
+strap's 2,140-byte raw optical deep buffers — a continuous multi-channel front-end at 25 Hz — over
+a 13.7-hour session. That decode (workspace: `NOOP/optical-decode-2140/`) is the source of the
+three new assets below (`optical-channels`, `ppg-continuous`, `hr-recovery`). The `ppg-hero.json`
+burst is retained as the earliest optical beat in the story; the continuous PPG now sits beside it.
+These are genuine ADC captures, byte-decoded, not decimated or interpolated or synthesized.
+
+### `optical-channels.json` — raw 6-channel optical front-end (real, continuous)
+- **Source**: WHOOP MG 2,140-byte raw optical offload buffer (record v20, type-0x2F), fw 50.40.1.0,
+  captured 2026-07-14 from Vishnu's own strap. Decoded per `NOOP/optical-decode-2140/decode_findings.json`.
+- **Shape**: 6 channels × **16 s @ 25 Hz** (400 samples/channel), sample-major.
+- **Channels**: two green photodiodes, infrared, red, two ambient/dark references. Each AFE channel
+  is 25 samples/buffer × 4-byte LE, 20-bit signed. **Optical channels inverted** to blood-volume
+  convention (raw counts are light intensity; systole absorbs → counts drop). Each channel is
+  auto-scaled independently on display, so DC offsets don't leak.
+- **Caveat**: wavelength labels (green/IR/red) are **physics-inferred**, not proven (perfusion-index
+  order + LED-coupling + MAX86171-class AFE); stated as inferred in the caption. Channel *count*,
+  byte layout, and optical-vs-dark identity are byte-level proven.
+
+### `ppg-continuous.json` — continuous recovered green PPG (real)
+- **Source**: same 2,140-byte offload; the green channel R1 (offset 47), inverted.
+- **Shape / span**: single channel, **45 s @ 25 Hz** (1,125 samples), from a calm, strong-pulse
+  window (cardiac-band SNR selected). Downsampled at build time before reaching the browser.
+- **Transformation**: byte-decode + negate (blood-volume convention). No filtering, no resampling.
+
+### `hr-recovery.json` — optically-recovered HR vs strap ground truth (real)
+- **Source**: HR tracked from the recovered green pulse (`NOOP/optical-decode-2140/trk_R1.npy`)
+  vs the strap's own 1 Hz HR stream (`hr.csv`), same session.
+- **Window**: one **5-minute resting window** (2026-07-14 evening PDT) where HR swings 53→102 bpm.
+  `truth_bpm` = one strap reading per second; `recovered` = the tracker's ~1-per-10-s output.
+- **Accuracy (computed over the window)**: **median abs error 1 bpm, 100% of recovered readings
+  within 6 bpm.** Consistent with the decode's global rest-band figure (±2 bpm, README §3).
+- **Honesty bounds**: optical HR is recovered **at rest only** (above ~104 bpm the pulse is
+  physically swamped — a hardware wall, not a decode gap). Beat *counting* (mean HR) works;
+  beat-to-beat **HRV/PRV is NOT recoverable** at 25 Hz and is not claimed anywhere.
 
 ---
 

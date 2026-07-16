@@ -1,0 +1,100 @@
+---
+// Optical-recovered heart rate vs the strap's own ground-truth HR, over one
+// resting window. Two static inline-SVG series: the strap truth (bone, the
+// reference the recovered signal rides on) and the pulse-tracker's recovered
+// rate (vermillion, sparser markers). Built at build time — no client JS.
+// The story is agreement: the two lines coincide within ~1 bpm.
+import { loadHrRecovery } from '../lib/sensor';
+
+interface Props {
+  dataKey?: string;
+  caption?: string;
+}
+
+const { dataKey = 'hr-recovery', caption } = Astro.props;
+
+const hr = loadHrRecovery(dataKey);
+
+const W = 600;
+const H = 200;
+const PAD = 12;
+
+let truthLine = '';
+let recovLine = '';
+let recovPts: Array<{ x: number; y: number }> = [];
+if (hr) {
+  const [bandLo, bandHi] = hr.hrBand;
+  const lo = bandLo - 3;
+  const hi = bandHi + 3;
+  const span = hi - lo || 1;
+  const x = (t: number) => PAD + (t / hr.windowSeconds) * (W - 2 * PAD);
+  const y = (bpm: number) => PAD + (1 - (bpm - lo) / span) * (H - 2 * PAD);
+
+  truthLine = hr.truth
+    .map((bpm, i) => `${x(i).toFixed(1)},${y(bpm).toFixed(1)}`)
+    .join(' ');
+  recovPts = hr.recovered.map((p) => ({ x: x(p.t), y: y(p.bpm) }));
+  recovLine = recovPts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+}
+---
+
+<figure class="figure hr-recovery" data-hr-recovery>
+  {
+    hr ? (
+      <svg
+        class="hr-recovery-svg"
+        width="100%"
+        height="180"
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        role="img"
+        aria-label="Optically-recovered heart rate tracking the strap's own heart rate within about one beat per minute across a resting window"
+      >
+        <polyline
+          points={truthLine}
+          fill="none"
+          stroke="#e9e2d6"
+          stroke-width="1.5"
+          stroke-opacity="0.75"
+          vector-effect="non-scaling-stroke"
+        />
+        <polyline
+          points={recovLine}
+          fill="none"
+          stroke="#ff6b35"
+          stroke-width="1.75"
+          vector-effect="non-scaling-stroke"
+        />
+        {recovPts.map((p) => (
+          <circle
+            cx={p.x.toFixed(1)}
+            cy={p.y.toFixed(1)}
+            r="2.6"
+            fill="#ff6b35"
+            vector-effect="non-scaling-stroke"
+          />
+        ))}
+      </svg>
+    ) : (
+      <p class="figure-empty">HR-recovery data unavailable.</p>
+    )
+  }
+  {
+    hr && (
+      <div class="hr-recovery-key" data-hr-recovery-key>
+        <span class="hr-recovery-legend">
+          <span class="swatch swatch-recov" /> optical-recovered
+          <span class="swatch swatch-truth" /> strap ground truth
+        </span>
+        <span class="hr-recovery-stat">
+          median error {hr.medAbsErrBpm} bpm · {hr.within6Pct}% within 6 bpm ·{' '}
+          {hr.hrBand[0]}–{hr.hrBand[1]} bpm
+        </span>
+      </div>
+    )
+  }
+  <figcaption>
+    {caption ??
+      "Heart rate recovered from the raw green-optical channel, tracking the strap's own HR across a resting window — my own WHOOP MG, 2026-07-14."}
+  </figcaption>
+</figure>

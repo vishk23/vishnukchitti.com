@@ -8,6 +8,7 @@ import ChannelToggle from '../../components/ChannelToggle.astro';
 import PpgBurst from '../../components/PpgBurst.astro';
 import Hypnogram from '../../components/Hypnogram.astro';
 import HrvSeries from '../../components/HrvSeries.astro';
+import HrRecovery from '../../components/HrRecovery.astro';
 
 interface Props {
   entry: CollectionEntry<'projects'>;
@@ -86,7 +87,43 @@ const isNoop = entry.data.slug === 'noop';
 
           <div class="beat" data-beat="4">
             <p>
-              <strong>Parsed motion.</strong> A second buffer resolves into six
+              <strong>The whole optical front-end.</strong> The persisted burst
+              was one channel. The strap's raw optical offload banks{' '}
+              <em>six</em> — two green photodiodes, red, infrared, and two dark
+              references — twenty-five times a second. I decoded the 2,140-byte
+              buffer to the byte: the green LED drive current, the per-photodiode
+              offset DACs, every channel slot. Toggle them — the pulse lives in
+              green and infrared; the dark references are the noise floor.
+            </p>
+            <ChannelToggle
+              dataKey="optical-channels"
+              caption="16 seconds of the raw optical front-end — six channels at 25 Hz, decoded from the WHOOP MG's 2,140-byte offload buffer (my own strap, 2026-07-14). Toggle any channel: green and infrared carry the cardiac pulse; the dark references are ambient noise. Wavelength labels are physics-inferred."
+            />
+          </div>
+
+          <div class="beat" data-beat="5">
+            <p>
+              <strong>A pulse from raw light.</strong> The green channel, over
+              time, is a clean cardiac pulse — you can see breathing ride its
+              amplitude. Track that pulse against the strap's own heart rate
+              across a resting window and it lands within a beat: median error 1
+              bpm, every recovered reading within 6. Heart rate, rebuilt from the
+              light the sensor never exposed.
+            </p>
+            <WaveformScrub
+              mode="scrub"
+              dataKey="ppg-continuous"
+              caption="45 continuous seconds of the recovered green PPG (25 Hz) — my own WHOOP MG, 2026-07-14. Scroll to scrub across the pulse; the slow swell is respiration modulating the beat amplitude."
+            />
+            <HrRecovery
+              dataKey="hr-recovery"
+              caption="Heart rate recovered from that raw green channel (orange) tracking the strap's own HR (bone) across a 5-minute resting window that swings from 53 to 102 bpm — my own WHOOP MG, 2026-07-14."
+            />
+          </div>
+
+          <div class="beat" data-beat="6">
+            <p>
+              <strong>Parsed motion.</strong> Another buffer resolves into six
               axes of motion — the strap's own record of how the wrist moved,
               decoded from bytes it never meant to explain.
             </p>
@@ -96,7 +133,7 @@ const isNoop = entry.data.slug === 'noop';
             />
           </div>
 
-          <div class="beat" data-beat="5">
+          <div class="beat" data-beat="7">
             <p>
               <strong>From signal to sleep.</strong> Old scoring saw elevated
               heart rate and called it WAKE — even on a dead-still wrist. That's
@@ -104,7 +141,7 @@ const isNoop = entry.data.slug === 'noop';
             </p>
           </div>
 
-          <div class="beat" data-beat="6">
+          <div class="beat" data-beat="8">
             <p>
               <strong>Corroboration.</strong> Cross-reference the IMU: no
               motion, no wake. A racing heart on a motionless wrist stays asleep.
@@ -116,7 +153,7 @@ const isNoop = entry.data.slug === 'noop';
             />
           </div>
 
-          <div class="beat" data-beat="7">
+          <div class="beat" data-beat="9">
             <p>
               <strong>Shipped upstream.</strong> All of it lands as merged pull
               requests in the base app — 13 of them — not a fork nobody runs.
