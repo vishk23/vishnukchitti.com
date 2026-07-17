@@ -37,7 +37,7 @@ const rendered = await Promise.all(
         {entry.data.section === 'hero' && (
           <WaveformScrub
             dataKey="ppg-continuous"
-            caption="My own heartbeat, recovered from raw light — 45 seconds of the WHOOP strap's green-optical channel (25 Hz), a signal the vendor never exposes, decoded byte-by-byte. Each dip is one beat; the slow swell is breathing."
+            caption="My own heartbeat, decoded from the WHOOP strap's raw green-optical channel — 45 seconds at 25 Hz, a signal the vendor never exposes."
           />
         )}
 
@@ -59,7 +59,7 @@ const rendered = await Promise.all(
         {entry.data.section === 'selected-work' && (
           <ChannelToggle
             dataKey="optical-channels"
-            caption="The strap's whole raw optical front-end — six channels at 25 Hz from a 2,140-byte offload buffer, decoded to the byte (my own WHOOP MG). Green and infrared carry the cardiac pulse; the dark references are the noise floor. Toggle any channel."
+            caption="The strap's raw optical front-end — six channels at 25 Hz, decoded byte-by-byte from a 2,140-byte offload buffer. My own WHOOP MG. Toggle any channel."
           />
         )}
 

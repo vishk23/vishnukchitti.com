@@ -92,32 +92,30 @@ const isNoop = entry.data.slug === 'noop';
               <em>six</em> — two green photodiodes, red, infrared, and two dark
               references — twenty-five times a second. I decoded the 2,140-byte
               buffer to the byte: the green LED drive current, the per-photodiode
-              offset DACs, every channel slot. Toggle them — the pulse lives in
-              green and infrared; the dark references are the noise floor.
+              offset DACs, every channel slot.
             </p>
             <ChannelToggle
               dataKey="optical-channels"
-              caption="16 seconds of the raw optical front-end — six channels at 25 Hz, decoded from the WHOOP MG's 2,140-byte offload buffer (my own strap, 2026-07-14). Toggle any channel: green and infrared carry the cardiac pulse; the dark references are ambient noise. Wavelength labels are physics-inferred."
+              caption="The raw optical front-end — six channels at 25 Hz, decoded from the WHOOP MG's 2,140-byte offload buffer. My own strap, 2026-07-14. Toggle any channel; wavelength labels are physics-inferred."
             />
           </div>
 
           <div class="beat" data-beat="5">
             <p>
               <strong>A pulse from raw light.</strong> The green channel, over
-              time, is a clean cardiac pulse — you can see breathing ride its
-              amplitude. Track that pulse against the strap's own heart rate
-              across a resting window and it lands within a beat: median error 1
-              bpm, every recovered reading within 6. Heart rate, rebuilt from the
-              light the sensor never exposed.
+              time, is a clean cardiac pulse. Track it against the strap's own
+              heart rate across a resting window and it lands within a beat:
+              median error 1 bpm, every recovered reading within 6. Heart rate,
+              rebuilt from the light the sensor never exposed.
             </p>
             <WaveformScrub
               mode="scrub"
               dataKey="ppg-continuous"
-              caption="45 continuous seconds of the recovered green PPG (25 Hz) — my own WHOOP MG, 2026-07-14. Scroll to scrub across the pulse; the slow swell is respiration modulating the beat amplitude."
+              caption="45 continuous seconds of the recovered green PPG (25 Hz). My own WHOOP MG, 2026-07-14. Scroll to scrub."
             />
             <HrRecovery
               dataKey="hr-recovery"
-              caption="Heart rate recovered from that raw green channel (orange) tracking the strap's own HR (bone) across a 5-minute resting window that swings from 53 to 102 bpm — my own WHOOP MG, 2026-07-14."
+              caption="Recovered heart rate against the strap's own, across a 5-minute resting window. My own WHOOP MG, 2026-07-14."
             />
           </div>
 
