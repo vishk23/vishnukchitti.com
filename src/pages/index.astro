@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import WaveformScrub from '../components/WaveformScrub.astro';
 import ChannelToggle from '../components/ChannelToggle.astro';
+import ProjectSignal from '../components/ProjectSignal.astro';
 import { getCollection, render } from 'astro:content';
 
 // All homepage copy comes from the `sections` collection, ordered by `order`.
@@ -29,8 +30,9 @@ const rendered = await Promise.all(
 <Layout>
   {
     rendered.map(({ entry, Body }) => (
-      <section id={anchorFor[entry.data.section] ?? entry.data.section}>
-        <h2>{entry.data.heading}</h2>
+      <section id={anchorFor[entry.data.section] ?? entry.data.section} data-reveal>
+        {entry.data.section === 'hero' && <p class="hero-eyebrow">Boston, MA · data engineer</p>}
+        {entry.data.section === 'hero' ? <h1>{entry.data.heading}</h1> : <h2>{entry.data.heading}</h2>}
         {entry.data.lede && <p class="muted">{entry.data.lede}</p>}
 
         {/* Proof island lives inside the hero section flow. */}
@@ -41,15 +43,24 @@ const rendered = await Promise.all(
           />
         )}
 
+        {entry.data.section === 'hero' && entry.data.note && (
+          <p class="voice-note"><span>voice system</span>{entry.data.note}</p>
+        )}
+
         {entry.data.items && (
           <ul>
             {entry.data.items.map((item) => (
-              <li>
-                <strong>
-                  {item.href ? <a href={item.href}>{item.title}</a> : item.title}
-                </strong>
-                {item.meta && <span class="muted"> — {item.meta}</span>}
-                {item.body && <p>{item.body}</p>}
+              <li data-reveal>
+                <div class="item-copy">
+                  <strong>
+                    {item.href ? <a href={item.href}>{item.title}</a> : item.title}
+                  </strong>
+                  {item.meta && <span class="muted"> — {item.meta}</span>}
+                  {item.body && <p>{item.body}</p>}
+                </div>
+                {entry.data.section === 'selected-work' && item.href && (
+                  <ProjectSignal slug={item.href.split('/').pop() ?? 'mcp'} compact />
+                )}
               </li>
             ))}
           </ul>

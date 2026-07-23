@@ -9,6 +9,7 @@ import PpgBurst from '../../components/PpgBurst.astro';
 import Hypnogram from '../../components/Hypnogram.astro';
 import HrvSeries from '../../components/HrvSeries.astro';
 import HrRecovery from '../../components/HrRecovery.astro';
+import ProjectSignal from '../../components/ProjectSignal.astro';
 
 interface Props {
   entry: CollectionEntry<'projects'>;
@@ -29,11 +30,16 @@ const { Content } = await render(entry);
 // noop is the flagship deep-dive: it hosts the scroll-story that walks a strap's
 // raw BLE bytes through to shipped physiology, beside the real captured figures.
 const isNoop = entry.data.slug === 'noop';
+const projectOrder = ['noop', 'add-mcp', 'rhapsode', 'arbiter', 'mcp'];
+const allProjects = await getCollection('projects');
+const currentIndex = projectOrder.indexOf(entry.data.slug);
+const nextSlug = projectOrder[(currentIndex + 1) % projectOrder.length];
+const nextProject = allProjects.find((project) => project.data.slug === nextSlug);
 ---
 
 <Layout title={entry.data.title} description={entry.data.summary}>
   <p class="back-link"><a href="/#work">← Selected work</a></p>
-  <article>
+  <article data-project={entry.data.slug}>
     <h1>{entry.data.title}</h1>
     <p class="proj-role">
       {entry.data.role}
@@ -48,6 +54,8 @@ const isNoop = entry.data.slug === 'noop';
           entry.data.links.map((l) => <a href={l.href}>{l.label} ↗</a>)
       }
     </div>
+
+    <ProjectSignal slug={entry.data.slug} />
 
     <Content />
 
@@ -171,5 +179,12 @@ const isNoop = entry.data.slug === 'noop';
         </section>
       )
     }
+
+    {nextProject && (
+      <nav class="project-next" aria-label="Next project">
+        <span>Next investigation</span>
+        <a href={`/projects/${nextProject.data.slug}`}>{nextProject.data.title} →</a>
+      </nav>
+    )}
   </article>
 </Layout>

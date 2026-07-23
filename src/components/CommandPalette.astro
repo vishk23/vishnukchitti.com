@@ -17,10 +17,13 @@ const routes = (site?.data.nav ?? []).map((n) => ({
     type="text"
     placeholder="Jump to… (type to filter)"
     aria-label="Command palette search"
+    role="combobox"
+    aria-controls="cmdk-results"
+    aria-expanded="false"
     data-cmdk-input
     autocomplete="off"
   />
-  <ul data-cmdk-list role="listbox"></ul>
+  <ul id="cmdk-results" data-cmdk-list role="listbox"></ul>
 </dialog>
 
 <script is:inline define:vars={{ routes }}>
@@ -53,10 +56,11 @@ const routes = (site?.data.nav ?? []).map((n) => ({
       list.innerHTML = filtered
         .map(
           (r, i) =>
-            `<li role="option" aria-selected="${i === selected}">` +
+            `<li id="cmdk-option-${i}" role="option" aria-selected="${i === selected}">` +
             `<a href="${r.href}">${r.label}</a></li>`,
         )
         .join('');
+      input.setAttribute('aria-activedescendant', filtered.length ? `cmdk-option-${selected}` : '');
     }
 
     function open() {
@@ -65,6 +69,8 @@ const routes = (site?.data.nav ?? []).map((n) => ({
         input.value = '';
         selected = 0;
         render();
+        input.setAttribute('aria-expanded', 'true');
+        document.querySelectorAll('[data-cmdk-open]').forEach((btn) => btn.setAttribute('aria-expanded', 'true'));
         input.focus();
       }
     }
@@ -113,6 +119,11 @@ const routes = (site?.data.nav ?? []).map((n) => ({
     // Click on the backdrop closes.
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) close();
+    });
+
+    dialog.addEventListener('close', () => {
+      input.setAttribute('aria-expanded', 'false');
+      document.querySelectorAll('[data-cmdk-open]').forEach((btn) => btn.setAttribute('aria-expanded', 'false'));
     });
   })();
 </script>

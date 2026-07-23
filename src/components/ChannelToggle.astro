@@ -38,6 +38,9 @@ if (series && series.channels.length >= 6) {
 const channels = rawChannels.map((c) =>
   Array.from(normalizeToClip(minMaxDownsample(c, buckets))),
 );
+const sampleRate = series?.sampleRateHz ?? 0;
+const sampleCount = rawChannels[0]?.length ?? 0;
+const durationSeconds = sampleRate > 0 ? sampleCount / sampleRate : 0;
 
 const uid = 'ct-' + Math.random().toString(36).slice(2, 8);
 ---
@@ -54,6 +57,11 @@ const uid = 'ct-' + Math.random().toString(36).slice(2, 8);
       ))
     }
   </div>
+  <div class="figure-readout" aria-hidden="true">
+    <span>{labels.length} channels</span>
+    <strong>{sampleRate ? `${sampleRate.toFixed(0)} Hz` : 'sampled signal'}</strong>
+    <span>{durationSeconds < 10 ? `${durationSeconds.toFixed(1)} s` : `${durationSeconds.toFixed(0)} s`}</span>
+  </div>
   <figcaption>
     {caption ?? 'Multi-channel sensor figure.'}
     {
@@ -63,6 +71,7 @@ const uid = 'ct-' + Math.random().toString(36).slice(2, 8);
     }
   </figcaption>
   <script
+    is:inline
     type="application/json"
     data-ct-config
     set:html={JSON.stringify({ channels, labels })}

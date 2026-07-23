@@ -20,6 +20,8 @@ const H = 160;
 const PAD = 8;
 
 let polyline = '';
+let minValue = 0;
+let maxValue = 0;
 if (burst && burst.samples.length > 1) {
   const s = burst.samples;
   const n = s.length;
@@ -29,6 +31,8 @@ if (burst && burst.samples.length > 1) {
     if (v < min) min = v;
     if (v > max) max = v;
   }
+  minValue = min;
+  maxValue = max;
   const range = max - min || 1;
   polyline = s
     .map((v, i) => {
@@ -63,6 +67,13 @@ if (burst && burst.samples.length > 1) {
       <p class="figure-empty">PPG burst data unavailable.</p>
     )
   }
+  {burst && (
+    <div class="figure-readout" aria-hidden="true">
+      <span>0 ms</span>
+      <strong>{burst.samples.length} samples · {burst.sampleRateHz} Hz · Δ {(maxValue - minValue).toLocaleString()} ADC</strong>
+      <span>{Math.round((burst.samples.length / burst.sampleRateHz) * 1000)} ms</span>
+    </div>
+  )}
   <figcaption>
     {caption ??
       'One decoded 24-sample v26 optical PPG burst (24 Hz, ~1 s), decoded from WHOOP 5.0 hardware captures.'}

@@ -2,10 +2,10 @@
   {
     "id": "site",
     "title": "Vishnu Reddy Kchitti — Backend & Data-Platform Engineer",
-    "tagline": "I build systems from zero, then make the numbers tie out.",
+    "tagline": "I build the tooling I wish existed, then use it every day.",
     "author": "Vishnu Reddy Kchitti",
     "email": "vishnukchittibhooma@gmail.com",
-    "description": "Backend and data-platform engineer in Boston. I build systems from zero, reconcile the data until it ties out, and ship open-source tooling for wearables, MCP, and developer infrastructure.",
+    "description": "Data and backend engineer in Boston. I build tooling I use every day, from bank data platforms to open-source wearables, MCP infrastructure, and resilient dictation.",
     "nav": [
       { "label": "Home", "href": "/", "keywords": "top hero start" },
       { "label": "Selected Work", "href": "/#work", "keywords": "projects portfolio" },

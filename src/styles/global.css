@@ -11,7 +11,7 @@
   --muted: #6f6861;
   --hairline: rgba(28, 25, 23, 0.16);
   --hairline-soft: rgba(28, 25, 23, 0.08);
-  --signal: #d9481c;
+  --signal: #b83c18;
   --signal-bright: #ff6b35;
   --panel: #14110e;
   --panel-ink: #e9e2d6;
@@ -19,7 +19,8 @@
   --panel-grid: rgba(233, 226, 214, 0.07);
   --serif: 'Newsreader Variable', 'Newsreader', georgia, serif;
   --mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
-  --maxw: 44rem;
+  --measure: 44rem;
+  --maxw: 72rem;
   --pad: clamp(1.25rem, 4vw, 2rem);
 }
 
@@ -41,6 +42,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  color-scheme: light dark;
+  scroll-padding-top: 2rem;
 }
 
 body {
@@ -77,6 +80,30 @@ a:hover {
   color: var(--signal);
 }
 
+:where(a, button, input):focus-visible {
+  outline: 2px solid var(--signal-bright);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.55rem 0.8rem;
+  transform: translateY(-180%);
+  border-radius: 4px;
+  background: var(--signal);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
 p {
   margin: 0 0 1.1em;
 }
@@ -96,7 +123,7 @@ p {
   flex-wrap: wrap;
   align-items: baseline;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.04em;
   text-transform: lowercase;
 }
@@ -118,7 +145,7 @@ p {
 
 .site-nav button {
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   color: var(--muted);
   background: transparent;
   border: 1px solid var(--hairline);
@@ -135,7 +162,13 @@ p {
 /* ── Sections & headings ─────────────────────────────────────────────────── */
 
 section {
+  max-width: var(--measure);
+  margin-inline: auto;
   padding: 3.5rem 0 1.5rem;
+}
+
+#work {
+  max-width: var(--maxw);
 }
 
 section + section {
@@ -181,23 +214,21 @@ section:not(#top) > h2::before {
   padding-top: clamp(3rem, 9vh, 5.5rem);
 }
 
-#top > h2 {
+#top > h1 {
   font-size: clamp(2.9rem, 8vw, 4.6rem);
   font-weight: 460;
   margin-bottom: 0.35em;
   animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-#top > h2::before {
-  content: 'Boston, MA · data platforms & signal';
-  display: block;
+.hero-eyebrow {
+  margin: 0 0 1.4rem;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 1.4rem;
 }
 
 #top > .muted {
@@ -236,6 +267,10 @@ section ul li {
   border-top: 1px solid var(--hairline-soft);
 }
 
+section ul li .item-copy {
+  min-width: 0;
+}
+
 section ul li::before {
   content: counter(item, decimal-leading-zero);
   position: absolute;
@@ -271,7 +306,7 @@ section ul li:hover strong a::after {
 section ul li .muted {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-left: 0.25rem;
@@ -316,7 +351,7 @@ section ul li p {
 .figure figcaption {
   margin-top: 0.8rem;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   line-height: 1.6;
   letter-spacing: 0.03em;
   color: var(--panel-muted);
@@ -357,6 +392,11 @@ article h1 {
   font-weight: 470;
 }
 
+article {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
 article h2 {
   font-size: 1.45rem;
   margin-top: 2.2em;
@@ -393,7 +433,7 @@ article .proj-meta a {
   margin: 0 auto;
   padding: 1.6rem var(--pad) 2.2rem;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   letter-spacing: 0.05em;
   color: var(--muted);
 }
@@ -463,7 +503,7 @@ dialog.cmdk a {
   html {
     scroll-behavior: auto;
   }
-  #top > h2,
+  #top > h1,
   #top > .muted {
     animation: none;
   }
@@ -476,10 +516,280 @@ dialog.cmdk a {
 
 /* Back link + project header meta. */
 .back-link {
+  max-width: var(--measure);
+  margin-inline: auto;
   margin: 2.2rem 0 0;
   font-family: var(--mono);
   font-size: 0.72rem;
   letter-spacing: 0.05em;
+}
+
+.voice-note {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem 1rem;
+  align-items: baseline;
+  margin: -0.7rem 0 2.2rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  line-height: 1.65;
+}
+
+.voice-note span {
+  color: var(--signal);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Selected work is an evidence index: copy on the left, proof on the right. */
+#work > ul {
+  margin-top: 2rem;
+}
+
+#work > ul > li {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.9fr) minmax(21rem, 1.1fr);
+  gap: 1.3rem 2.5rem;
+  align-items: center;
+  padding-block: 1.75rem;
+}
+
+#work > ul > li::before {
+  top: 1.95rem;
+}
+
+/* Project proof modules share instrument grammar, never a card shadow. */
+.project-signal {
+  width: min(56rem, calc(100% + 6rem));
+  margin: 1.8rem -3rem 3rem;
+  padding: 1rem 1.1rem 0.85rem;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--panel-ink);
+}
+
+.project-signal.compact {
+  width: 100%;
+  margin: 0;
+  padding: 0.8rem 0.9rem 0.7rem;
+}
+
+.project-signal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.4;
+  letter-spacing: 0.055em;
+  color: var(--panel-muted);
+  text-transform: uppercase;
+}
+
+.project-signal-head strong {
+  color: var(--signal-bright);
+  font: inherit;
+  text-align: right;
+}
+
+.project-signal svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  background:
+    repeating-linear-gradient(to right, var(--panel-grid) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(to bottom, var(--panel-grid) 0 1px, transparent 1px 55px);
+}
+
+.project-signal.compact svg {
+  max-height: 128px;
+}
+
+.project-signal text {
+  fill: var(--panel-muted);
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+
+.project-signal .value {
+  fill: var(--panel-ink);
+  font-size: 18px;
+}
+
+.project-signal .signal-text,
+.project-signal .bad {
+  fill: var(--signal-bright);
+}
+
+.project-signal .good {
+  fill: var(--panel-ink);
+}
+
+.project-signal .grid-line,
+.project-signal .ghost-box,
+.project-signal .solid-box,
+.project-signal .signal-line,
+.project-signal .truth-line,
+.project-signal .audit-mark {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.project-signal .grid-line,
+.project-signal .ghost-box {
+  stroke: var(--panel-muted);
+  stroke-opacity: 0.32;
+  stroke-width: 1;
+}
+
+.project-signal .grid-line.strong,
+.project-signal .truth-line {
+  stroke: var(--panel-ink);
+  stroke-opacity: 0.58;
+  stroke-width: 1.4;
+}
+
+.project-signal .solid-box {
+  stroke: var(--signal-bright);
+  stroke-width: 1.5;
+}
+
+.project-signal .signal-line,
+.project-signal .audit-mark {
+  stroke: var(--signal-bright);
+  stroke-width: 2;
+}
+
+.project-signal .signal-dot,
+.project-signal .signal-fill {
+  fill: var(--signal-bright);
+}
+
+.project-signal .ghost-fill {
+  fill: var(--panel-muted);
+  opacity: 0.34;
+}
+
+.signal-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw-signal 1.2s 180ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes draw-signal {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Scroll reveals are restrained: hierarchy arriving, not decorative motion. */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 520ms ease, transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.figure-readout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin-top: 0.55rem;
+  color: var(--panel-muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.figure-readout strong {
+  color: var(--panel-ink);
+  font-weight: 500;
+}
+
+.project-next {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 4.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.project-next span {
+  color: var(--signal);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.project-next a {
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+dialog.cmdk[open] {
+  animation: palette-in 160ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@keyframes palette-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.985); }
+}
+
+@media (max-width: 48rem) {
+  #work > ul > li {
+    grid-template-columns: 1fr;
+    padding-block: 1.4rem;
+  }
+
+  #work > ul > li::before {
+    top: 1.6rem;
+  }
+
+  .project-signal {
+    width: calc(100% + 2 * var(--pad));
+    margin-inline: calc(-1 * var(--pad));
+    border-inline: 0;
+    border-radius: 0;
+  }
+
+  .project-signal.compact {
+    width: 100%;
+    margin: 0.2rem 0 0;
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+  }
+
+  .voice-note {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .signal-draw,
+  dialog.cmdk[open] {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
 }
 
 .back-link a {

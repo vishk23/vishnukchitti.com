@@ -1,0 +1,112 @@
+---
+interface Props {
+  slug: string;
+  compact?: boolean;
+}
+
+const { slug, compact = false } = Astro.props;
+
+const labels: Record<string, { eyebrow: string; result: string; aria: string }> = {
+  noop: {
+    eyebrow: 'raw signal → corroborated data',
+    result: '1 bpm median error',
+    aria: 'A raw optical waveform becoming a corroborated heart-rate signal with one beat per minute median error.',
+  },
+  'add-mcp': {
+    eyebrow: 'hybrid config → atomic replacement',
+    result: 'merged upstream',
+    aria: 'An invalid hybrid MCP configuration being replaced atomically by one valid transport configuration.',
+  },
+  rhapsode: {
+    eyebrow: 'speech → raced transcription',
+    result: '0.6–0.9 s cloud path',
+    aria: 'A speech waveform racing through cloud and local transcription paths before clean text is returned.',
+  },
+  arbiter: {
+    eyebrow: 'checker pass → audited proof',
+    result: '82.8% → 16.3%',
+    aria: 'A comparison showing checker passes fall from 82.8 percent to 16.3 percent after proof auditing.',
+  },
+  mcp: {
+    eyebrow: 'read → propose → confirm',
+    result: 'no silent writes',
+    aria: 'An agent permission flow where reads are open, proposed changes require confirmation, and every change is journaled.',
+  },
+};
+
+const label = labels[slug] ?? labels.mcp;
+---
+
+<div class:list={['project-signal', { compact }]} data-project-signal={slug} role="img" aria-label={label.aria}>
+  <div class="project-signal-head">
+    <span>{label.eyebrow}</span>
+    <strong>{label.result}</strong>
+  </div>
+
+  {slug === 'noop' && (
+    <svg viewBox="0 0 640 220" aria-hidden="true">
+      <path class="grid-line" d="M0 55H640M0 110H640M0 165H640M160 0V220M320 0V220M480 0V220" />
+      <path class="signal-line signal-draw" d="M0 137 C28 130 34 72 54 76 S78 156 101 139 S127 45 151 74 S174 167 199 137 S228 57 253 78 S276 154 302 138 S328 43 354 68 S379 173 405 140 S430 61 456 75 S480 159 507 137 S532 50 558 72 S586 158 610 132 S628 94 640 101" />
+      <path class="truth-line" d="M0 134 C80 133 130 128 210 132 S350 135 430 131 S560 129 640 132" />
+      <circle class="signal-dot" cx="405" cy="140" r="5" />
+      <text x="418" y="128">recovered pulse</text>
+    </svg>
+  )}
+
+  {slug === 'add-mcp' && (
+    <svg viewBox="0 0 640 220" aria-hidden="true">
+      <rect class="ghost-box" x="18" y="32" width="215" height="148" rx="5" />
+      <text x="35" y="58">[mcp.firecrawl]</text>
+      <text class="bad" x="35" y="91">command = "npx"</text>
+      <text class="bad" x="35" y="119">args = [...]</text>
+      <text class="good" x="35" y="151">url = "https://…"</text>
+      <path class="signal-line arrow" d="M266 106H365M348 91L365 106L348 121" />
+      <rect class="solid-box" x="402" y="52" width="220" height="110" rx="5" />
+      <text x="420" y="79">[mcp.firecrawl]</text>
+      <text class="good" x="420" y="113">type = "http"</text>
+      <text class="good" x="420" y="141">url = "https://…"</text>
+    </svg>
+  )}
+
+  {slug === 'rhapsode' && (
+    <svg viewBox="0 0 640 220" aria-hidden="true">
+      <path class="signal-line signal-draw" d="M10 109L24 94L38 129L52 63L66 153L80 82L94 124L108 45L122 166L136 75L150 119L164 88L178 132L192 101" />
+      <circle class="signal-dot" cx="211" cy="109" r="5" />
+      <path class="grid-line strong" d="M216 109H277M277 109V60H451M277 109V160H451" />
+      <text x="297" y="48">cloud · 0.6–0.9 s</text>
+      <text x="297" y="184">local · fallback</text>
+      <path class="signal-line arrow" d="M451 60C505 60 497 109 548 109M451 160C505 160 497 109 548 109" />
+      <rect class="solid-box" x="549" y="80" width="80" height="58" rx="5" />
+      <text x="566" y="114">text</text>
+    </svg>
+  )}
+
+  {slug === 'arbiter' && (
+    <svg viewBox="0 0 640 220" aria-hidden="true">
+      <text x="18" y="54">checker passed</text>
+      <rect class="ghost-fill" x="18" y="70" width="530" height="42" rx="3" />
+      <text class="value" x="565" y="100">82.8%</text>
+      <text x="18" y="149">genuinely valid</text>
+      <rect class="signal-fill" x="18" y="164" width="104" height="42" rx="3" />
+      <text class="value signal-text" x="139" y="194">16.3%</text>
+      <path class="audit-mark" d="M491 144l14 14 28-33" />
+    </svg>
+  )}
+
+  {slug === 'mcp' && (
+    <svg viewBox="0 0 640 220" aria-hidden="true">
+      <path class="grid-line strong" d="M126 110H254M386 110H514" />
+      <circle class="ghost-box" cx="77" cy="110" r="49" />
+      <circle class="ghost-box" cx="320" cy="110" r="66" />
+      <circle class="solid-box" cx="563" cy="110" r="49" />
+      <text text-anchor="middle" x="77" y="106">agent</text>
+      <text text-anchor="middle" x="77" y="128">read</text>
+      <text text-anchor="middle" x="320" y="106">propose</text>
+      <text text-anchor="middle" x="320" y="128">+ journal</text>
+      <text text-anchor="middle" x="563" y="106">human</text>
+      <text text-anchor="middle" x="563" y="128">confirm</text>
+      <circle class="signal-dot" cx="254" cy="110" r="5" />
+      <circle class="signal-dot" cx="514" cy="110" r="5" />
+    </svg>
+  )}
+</div>

@@ -34,21 +34,23 @@ const pageDesc = description ?? site?.data.description ?? '';
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDesc} />
     <meta property="og:type" content="website" />
+    <script is:inline>document.documentElement.classList.add('reveal-ready');</script>
     <!-- Per-page head extras (canonical, structured data, etc.). -->
     <slot name="head" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <nav class="site-nav" aria-label="Primary">
       <a href="/">vishnu reddy kchitti</a>
       {nav
         .filter((item) => item.href !== '/')
         .map((item) => <a href={item.href}>{item.label}</a>)}
-      <button type="button" data-cmdk-open aria-label="Open command palette">
+      <button type="button" data-cmdk-open aria-label="Open command palette" aria-haspopup="dialog" aria-expanded="false">
         ⌘K
       </button>
     </nav>
 
-    <main>
+    <main id="main-content">
       <slot />
     </main>
 
@@ -62,5 +64,23 @@ const pageDesc = description ?? site?.data.description ?? '';
     </footer>
 
     <CommandPalette />
+
+    <script>
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealItems = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        revealItems.forEach((item) => item.classList.add('is-visible'));
+      } else {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        revealItems.forEach((item) => revealObserver.observe(item));
+      }
+    </script>
   </body>
 </html>

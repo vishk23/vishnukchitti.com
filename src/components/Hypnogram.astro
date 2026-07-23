@@ -28,6 +28,7 @@ const W = 600;
 const H = 160;
 const PAD = 8;
 const rowH = (H - 2 * PAD) / STAGE_ROWS.length;
+const timeLabel = (iso: string) => iso ? new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' }).format(new Date(iso)) : '';
 
 interface Band {
   x: number;
@@ -91,6 +92,13 @@ if (hypno && hypno.segments.length > 0) {
   <ul class="hypnogram-legend" aria-hidden="true">
     {STAGE_ROWS.map((s) => <li data-stage={s}>{s}</li>)}
   </ul>
+  {hypno && (
+    <div class="figure-readout" aria-hidden="true">
+      <span>{timeLabel(hypno.nightStartIso)}</span>
+      <strong>{Math.floor(hypno.durationMin / 60)} h {Math.round(hypno.durationMin % 60)} min · {hypno.segments.length} stages</strong>
+      <span>{timeLabel(hypno.nightEndIso)}</span>
+    </div>
+  )}
   <figcaption>
     {caption ??
       "One night's sleep stages from my own WHOOP data."}

@@ -93,6 +93,13 @@ if (hr) {
       </div>
     )
   }
+  {hr && (
+    <div class="figure-readout" aria-hidden="true">
+      <span>0 s</span>
+      <strong>{hr.hrBand[0]}–{hr.hrBand[1]} bpm observed</strong>
+      <span>{hr.windowSeconds} s</span>
+    </div>
+  )}
   <figcaption>
     {caption ??
       "Heart rate recovered from the raw green-optical channel, tracking the strap's own HR across a resting window — my own WHOOP MG, 2026-07-14."}

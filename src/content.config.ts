@@ -38,6 +38,7 @@ const sections = defineCollection({
     order: z.number(),
     heading: z.string(),
     lede: z.string().optional(),
+    note: z.string().optional(),
     // Free-form structured items for list-shaped sections (e.g. experience roles).
     items: z
       .array(

@@ -44,6 +44,8 @@ const envelope = minMaxDownsample(raw, buckets);
 const clip = normalizeToClip(envelope);
 // Plain array for JSON transport to the client island.
 const points = Array.from(clip);
+const sampleRate = series?.sampleRateHz ?? 0;
+const durationSeconds = sampleRate > 0 ? raw.length / sampleRate : 0;
 
 const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
 ---
@@ -51,6 +53,11 @@ const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
 <figure class="figure" data-waveform-scrub data-mode={mode} id={uid}>
   <div class="scrub-stage" data-scrub-stage>
     <canvas data-scrub-canvas></canvas>
+  </div>
+  <div class="figure-readout" aria-hidden="true">
+    <span>0 s</span>
+    <strong>{sampleRate ? `${sampleRate.toFixed(sampleRate < 1 ? 3 : 0)} Hz · ${raw.length.toLocaleString()} samples` : `${raw.length.toLocaleString()} samples`}</strong>
+    <span>{durationSeconds >= 3600 ? `${(durationSeconds / 3600).toFixed(0)} h` : durationSeconds >= 60 ? `${(durationSeconds / 60).toFixed(0)} min` : `${durationSeconds.toFixed(0)} s`}</span>
   </div>
   <figcaption>
     {caption ?? 'Scrubbed sensor waveform.'}
@@ -61,6 +68,7 @@ const uid = 'wf-' + Math.random().toString(36).slice(2, 8);
     }
   </figcaption>
   <script
+    is:inline
     type="application/json"
     data-scrub-config
     set:html={JSON.stringify({ points })}

@@ -25,6 +25,8 @@ interface Pt {
 
 let pts: Pt[] = [];
 let polyline = '';
+let minRmssd = 0;
+let maxRmssd = 0;
 if (hrv && hrv.sessions.length > 0) {
   const vals = hrv.sessions.map((s) => s.rmssdMs);
   const n = vals.length;
@@ -35,6 +37,8 @@ if (hrv && hrv.sessions.length > 0) {
     if (v > max) max = v;
   }
   const range = max - min || 1;
+  minRmssd = min;
+  maxRmssd = max;
   pts = vals.map((v, i) => ({
     x: PAD + (n === 1 ? 0.5 : i / (n - 1)) * (W - 2 * PAD),
     y: PAD + (1 - (v - min) / range) * (H - 2 * PAD),
@@ -75,6 +79,13 @@ if (hrv && hrv.sessions.length > 0) {
       <p class="figure-empty">HRV data unavailable.</p>
     )
   }
+  {hrv && (
+    <div class="figure-readout" aria-hidden="true">
+      <span>{new Date(hrv.sessions[0].startIso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
+      <strong>{hrv.sessions.length} sessions · {minRmssd.toFixed(0)}–{maxRmssd.toFixed(0)} ms RMSSD</strong>
+      <span>{new Date(hrv.sessions[hrv.sessions.length - 1].startIso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
+    </div>
+  )}
   <figcaption>
     {caption ??
       'Nightly HRV (RMSSD) across my sleep sessions — my own WHOOP data.'}
