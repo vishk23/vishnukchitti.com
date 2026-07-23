@@ -12,6 +12,7 @@
       { "label": "Experience", "href": "/#experience", "keywords": "cv career history" },
       { "label": "Contact", "href": "/#contact", "keywords": "email reach out" },
       { "label": "noop", "href": "/projects/noop", "keywords": "project health sensor whoop ble" },
+      { "label": "add-mcp", "href": "/projects/add-mcp", "keywords": "project mcp installer codex firecrawl databricks neon open source" },
       { "label": "arbiter", "href": "/projects/arbiter", "keywords": "project z3 proofs" },
       { "label": "rhapsode", "href": "/projects/rhapsode", "keywords": "project dictation mac" },
       { "label": "MCP servers", "href": "/projects/mcp", "keywords": "project noop-cloud screencp" },

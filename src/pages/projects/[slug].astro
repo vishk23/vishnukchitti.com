@@ -14,7 +14,7 @@ interface Props {
   entry: CollectionEntry<'projects'>;
 }
 
-// One static page per project entry: /projects/noop, /arbiter, /rhapsode, /mcp.
+// One static page per project entry under /projects/<slug>.
 export const getStaticPaths: GetStaticPaths = async () => {
   const projects = await getCollection('projects');
   return projects.map((entry) => ({
@@ -154,7 +154,7 @@ const isNoop = entry.data.slug === 'noop';
           <div class="beat" data-beat="9">
             <p>
               <strong>Shipped upstream.</strong> All of it lands as merged pull
-              requests in the base app — 13 of them — not a fork nobody runs.
+              requests in the base app — 17 of them — not a fork nobody runs.
               Real users, real straps, real derived signals like these:
             </p>
             <WaveformScrub

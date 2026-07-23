@@ -1,14 +1,14 @@
 ---
 slug: noop
 title: "Your health data, decoded and verified"
-role: "noop (13 PRs merged upstream) + noop-cloud (creator)"
+role: "noop (17 PRs merged upstream) + noop-cloud (creator)"
 summary: "An open-source pipeline from raw Bluetooth to AI agents: decode the bytes off a WHOOP, check them against Oura and Apple Watch, query the result over MCP."
 stack:
   - "BLE protocol reverse-engineering"
   - "Swift + Kotlin"
   - "MCP (Streamable HTTP)"
 links:
-  - label: "13 merged PRs"
+  - label: "17 merged PRs"
     href: "https://github.com/ryanbr/noop/pulls?q=is%3Apr+author%3Avishk23+is%3Amerged"
   - label: "vishk23/noop"
     href: "https://github.com/vishk23/noop"
@@ -18,7 +18,7 @@ links:
 
 ## What it is
 
-NOOP is an offline, on-device WHOOP companion app by [@ryanbr](https://github.com/ryanbr) and contributors. I work in its sensor-protocol and analytics layers, with 13 pull requests merged upstream — not a fork nobody runs. noop-cloud is mine: a self-hostable MCP server that mirrors the health database and serves it to Claude, ChatGPT, or any agent. Together they form a bring-your-own-device health stack: strap, ring, or watch, the data stays yours, and an agent can query it over MCP instead of you exporting CSVs.
+NOOP is an offline, on-device WHOOP companion app by [@ryanbr](https://github.com/ryanbr) and contributors. I work in its sensor-protocol and analytics layers, with 17 pull requests merged upstream — not a fork nobody runs. noop-cloud is mine: a self-hostable MCP server that mirrors the health database and serves it to Claude, ChatGPT, or any agent. Together they form a bring-your-own-device health stack: strap, ring, or watch, the data stays yours, and an agent can query it over MCP instead of you exporting CSVs.
 
 ## The hard parts
 
