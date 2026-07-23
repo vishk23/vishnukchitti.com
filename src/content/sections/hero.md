@@ -2,11 +2,11 @@
 section: hero
 order: 1
 heading: "Vishnu Reddy Kchitti"
-lede: "Backend and data-platform engineer. I build systems from zero."
+lede: "I build systems from zero, then make the numbers tie out."
 ---
 
-At Bristol County Savings Bank I stood up the enterprise data platform: I recommended Microsoft Fabric, built the orchestration, and led a 3-person migration off the Alteryx, Access, and Excel workflows that came before. The platform now runs 343M+ rows across 112 tables, reconciled to the penny.
+At Bristol County Savings Bank, I inherited data spread across Alteryx, Access, and Excel. What would it take to replace that with one system the bank could actually trust? I recommended Microsoft Fabric, built the orchestration, and led a three-person migration. The platform now runs 343M+ rows across 112 tables and reconciles to the penny.
 
-The pattern in my work, at the bank and in open source, is correctness when being wrong is expensive. Independent sources that should agree but don't, and finding where and why before trusting either one. A ledger that has to sum. Three wearables that score the same night differently. An LLM proof that passes the checker but turns out vacuous when you audit it.
+The same question keeps showing up in my work: what do you do when two sources should agree and they don't? A ledger has to sum. WHOOP, Oura, and Apple Health should tell a coherent story about the same night. A formal proof can pass the checker and still prove nothing useful. I don't trust the answer until the independent evidence agrees.
 
-Most of my work ships to non-engineers: fourteen departments run on reports my platform generates, and when production broke for four days I owned the fix and the communication around it. I'm looking for backend, data-platform, or forward-deployed engineering roles. The stack matters less than the standards; given the choice I default to open source.
+That is the work I like: ambiguous systems, real users, and correctness that has to hold up. Fourteen departments run on reports my platform generates. When production broke for four days, I owned the fix and the communication around it. I'm looking for backend, data-platform, or forward-deployed engineering roles. The stack matters less than whether the system actually works.

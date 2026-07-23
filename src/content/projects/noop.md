@@ -1,8 +1,8 @@
 ---
 slug: noop
-title: "Your health data, decoded and verified"
+title: "noop — what is the strap actually sending?"
 role: "noop (17 PRs merged upstream) + noop-cloud (creator)"
-summary: "An open-source pipeline from raw Bluetooth to AI agents: decode the bytes off a WHOOP, check them against Oura and Apple Watch, query the result over MCP."
+summary: "Decode the bytes off a WHOOP, corroborate them against Oura and Apple Health, then make the result queryable by an agent without giving it silent write access."
 stack:
   - "BLE protocol reverse-engineering"
   - "Swift + Kotlin"
@@ -18,19 +18,21 @@ links:
 
 ## What it is
 
-NOOP is an offline, on-device WHOOP companion app by [@ryanbr](https://github.com/ryanbr) and contributors. I work in its sensor-protocol and analytics layers, with 17 pull requests merged upstream — not a fork nobody runs. noop-cloud is mine: a self-hostable MCP server that mirrors the health database and serves it to Claude, ChatGPT, or any agent. Together they form a bring-your-own-device health stack: strap, ring, or watch, the data stays yours, and an agent can query it over MCP instead of you exporting CSVs.
+NOOP is an offline, on-device WHOOP companion app by [@ryanbr](https://github.com/ryanbr) and contributors. I work in its sensor-protocol and analytics layers, with 17 pull requests merged upstream. This is not a fork nobody runs. noop-cloud is mine: a self-hostable MCP server that mirrors the health database and serves it to Claude, ChatGPT, or any agent.
+
+Together they answer the question I actually cared about. Can I bring my own strap, ring, or watch, keep the data mine, and still have an agent reason over the full-resolution signals? Yes, but only if the signals first agree and the agent cannot silently rewrite them.
 
 ## The hard parts
 
-**Decoding.** The WHOOP 5.0 speaks an undocumented Bluetooth Low Energy protocol. I decoded the raw 6-axis IMU offload buffer into activity features (#455), captured the high-rate R22 deep buffers the strap uses for research-grade motion (#454), and persisted the raw optical PPG waveform so the signal survives past a single reading (#415). The IMU buffer rendered on this page streams at 100Hz — the number is the figure. Then I went a layer deeper into the optics: the strap's 2,140-byte raw optical offload resolves into six photodiode channels at 25 Hz — two green, red, infrared, and two dark references — which I decoded to the byte, down to the green LED drive current and the per-photodiode offset DACs. From that green channel I recovered a cardiac pulse that tracks the strap's own heart rate to within a beat at rest (median error 1 bpm), and pulled a respiration estimate off the pulse's amplitude. The figures below are that recovered signal, not a mockup.
+**What are these bytes?** WHOOP 5.0 speaks an undocumented Bluetooth Low Energy protocol. I decoded the raw six-axis IMU offload into activity features (#455), captured the high-rate R22 deep buffers (#454), and persisted the raw optical PPG waveform (#415). Then I went a layer deeper. The strap's 2,140-byte optical record resolves into six photodiode channels at 25 Hz: two green, red, infrared, and two dark references. I decoded it down to the LED drive current and per-photodiode offset DACs. From the green channel I recovered a cardiac pulse that tracks the strap's own heart rate to a median error of 1 bpm at rest. The figures below are that signal, not a mockup.
 
-**Cross-vendor verification.** No vendor is ground truth: WHOOP, Oura, and Apple measure with different sensors and different algorithms, so the work is making their signals comparable and catching when one is miscalibrated or misparsed. Nightly HRV that has to hold up night over night. Motion-corroborated sleep scoring: I only trust the heart-rate call when the IMU corroborates it, so a spike on a motionless wrist no longer scores as wake (#465, #402) — that's the beat you can watch in the figures below. And import fixes that sound trivial and were not: an Oura importer storing a 0–100 readiness score as bpm, found by corroborating Oura's numbers against the other vendors' signals, fixed across both the Swift and Kotlin codebases (#365, #368, #376).
+**Which vendor is right?** None of them gets to be ground truth by default. WHOOP, Oura, and Apple use different sensors and algorithms, so I make the signals comparable and look for the contradiction. A heart-rate spike on a motionless wrist should not score as wake. I changed the sleep logic to require the IMU to corroborate it (#465, #402). An Oura importer was storing a 0–100 readiness score as beats per minute. Cross-device comparison exposed it, and I fixed the Swift and Kotlin twins (#365, #368, #376).
 
-**Writeback.** Clean data flows back out: Apple Health writeback for sleep stages, heart rate, and workouts (#249), so the verified result lands in the ecosystem people already use. Plus analytics upstream: Recovery Index and Activity Balance terms in the Charge score (#417), an opt-in workout-type classifier (#414), and a predictive low-battery alert (#250).
+**Does the cleaned result go anywhere useful?** It writes back to Apple Health: sleep stages, heart rate, and workouts (#249). I also shipped Recovery Index and Activity Balance terms in the Charge score (#417), an opt-in workout classifier (#414), and a predictive low-battery alert (#250).
 
-**Agent access.** noop-cloud exposes read tools and a propose/confirm/undo edit journal, split across read-only and read-write tokens. An agent can find and flag mis-scored data, but nothing changes without confirmation and nothing escapes the audit trail. The full server is its own study: [MCP tooling](/projects/mcp).
+**Can an agent help without becoming another source of bad data?** noop-cloud separates read and write tokens and routes edits through propose, confirm, journal, and undo. The agent can find a bad score and propose a correction. Nothing changes until I confirm it, and nothing escapes the audit trail. The full server is its own study: [MCP tooling](/projects/mcp).
 
 ## What I'd do differently
 
 <!-- DRAFT-RETRO: awaiting Vishnu sign-off -->
-The BLE decoding was reverse-engineered from captured buffers without official protocol docs, so a replayable capture-and-decode test harness would make the next strap firmware revision far cheaper to chase.
+I reverse-engineered the BLE protocol from captured buffers without official docs. Next time, I would build the replayable capture-and-decode harness first. Firmware will change. I should be able to rerun the evidence instead of chasing the whole protocol again.

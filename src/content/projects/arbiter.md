@@ -1,8 +1,8 @@
 ---
 slug: arbiter
-title: "arbiter — formal verification for paper claims"
+title: "arbiter — did the proof actually prove anything?"
 role: "Creator — open-source"
-summary: "82.8% of checker-passing miniF2F proofs collapse to 16.3% genuinely valid once you audit for vacuous proofs. The negative result was the point."
+summary: "A proof can pass the checker and still prove nothing useful. Auditing for vacuous proofs collapsed an 82.8% pass rate to 16.3% genuinely valid."
 stack:
   - "Python"
   - "Z3 / Knuckledragger"
@@ -16,12 +16,16 @@ links:
 
 ## What it is
 
-An open-source tool (`pip install arbiter-debate`) that points at a paper's PDF, extracts every claim, attempts machine verification of the encodable mathematical ones, and stages structured multi-agent debates across OpenAI, Anthropic, Google, and Grok to expose the gap between what a paper proves and what it claims. Includes a systems paper.
+Arbiter is an open-source tool (`pip install arbiter-debate`) that reads a paper, extracts its claims, attempts machine verification where the mathematics can be encoded, and runs structured debates across multiple model providers.
+
+I don't want to oversell it. The useful part was not building another multi-agent framework. It was finding the gap between “the checker passed” and “the paper's claim is actually supported.”
 
 ## The hard part
 
-The trust boundary. LLM claim-extraction and formalization are untrusted heuristics; only machine-checked proof certificates are trusted — and the central finding is how far apart those two are. On the audited miniF2F pipeline, **82.8% of problems pass the checker, but auditing every proved result for vacuous and trivial proofs collapses that roughly 5x to 16.3% genuinely valid.** Building the auditor that surfaces that gap — the vacuous-proof taxonomy, the per-turn validity gate, the multi-provider judge panel — was the real engineering, because "the checker returned UNSAT" is a much weaker claim than it looks.
+What can actually be trusted? LLM claim extraction and formalization are heuristics. A machine-checked certificate is stronger, but even that can certify a vacuous encoding. On the audited miniF2F pipeline, **82.8% of problems passed the checker. After auditing every result for vacuous and trivial proofs, only 16.3% remained genuinely valid.**
+
+The real engineering was the auditor around the checker: a vacuous-proof taxonomy, a per-turn validity gate, and a multi-provider judge panel. “The checker returned UNSAT” sounds decisive. The thing is, it is a much weaker claim than it looks.
 
 ## What I'd do differently
 
-Take the checker-passing number less seriously, sooner. The README is candid that the case studies are N=3 single runs with no gold labels and that the faithfulness of LLM-generated Z3 encodings is the open problem; I'd invest earlier in gold-labeled encodings so "genuinely valid" isn't a manual audit every time.
+I would take the checker-passing number less seriously, sooner. The case studies are N=3 single runs with no gold labels, and faithful LLM-generated Z3 encodings are still the open problem. Next time I would build the gold-labeled set first so “genuinely valid” does not depend on a manual audit every run.

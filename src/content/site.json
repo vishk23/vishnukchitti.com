@@ -2,10 +2,10 @@
   {
     "id": "site",
     "title": "Vishnu Reddy Kchitti — Backend & Data-Platform Engineer",
-    "tagline": "Backend and data-platform engineer. I build systems from zero.",
+    "tagline": "I build systems from zero, then make the numbers tie out.",
     "author": "Vishnu Reddy Kchitti",
     "email": "vishnukchittibhooma@gmail.com",
-    "description": "Backend and data-platform engineer in Boston. I run Bristol County Savings Bank's enterprise data platform and build open-source tools that decode, verify, and serve wearable health data to AI agents.",
+    "description": "Backend and data-platform engineer in Boston. I build systems from zero, reconcile the data until it ties out, and ship open-source tooling for wearables, MCP, and developer infrastructure.",
     "nav": [
       { "label": "Home", "href": "/", "keywords": "top hero start" },
       { "label": "Selected Work", "href": "/#work", "keywords": "projects portfolio" },

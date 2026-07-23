@@ -1,7 +1,7 @@
 ---
 section: contact
 order: 4
-heading: "Let's talk."
+heading: "What's the word?"
 lede: "Boston, MA"
 items:
   - title: "Email"
@@ -15,4 +15,4 @@ items:
     href: "https://www.linkedin.com/in/vishnukchitti"
 ---
 
-Open to backend, data-platform, and AI-adjacent engineering roles. Reach out.
+I'm open to backend, data-platform, forward-deployed, and AI-adjacent engineering roles. If the work involves untangling a messy system and making it actually hold up, reach out.

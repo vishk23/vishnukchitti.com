@@ -2,11 +2,11 @@
 section: experience
 order: 3
 heading: "Experience"
-lede: "Regulated banking, pharma R&D, and academic research — I build the data layer each time."
+lede: "Different domains, same job: understand the messy system, build the data layer, and make it hold up."
 items:
   - title: "Bristol County Savings Bank — Data Engineer"
     meta: "Taunton, MA · May 2025 – Present"
-    body: "Stood up and now run the bank's enterprise data platform: recommended the stack, built the orchestration, led a 3-person migration. Penny-perfect reconciliation under regulated-banking governance."
+    body: "Stood up and now run the bank's enterprise data platform. Recommended the stack, built the orchestration, and led a three-person migration. The data has to tie out penny by penny."
   - title: "Sorce Jobs — Software Engineer (Contract)"
     meta: "Remote / Boston, MA · February 2025 – June 2025"
     body: "Built backend pipelines and analytics for an early-stage job-matching startup, working directly with founders."
@@ -18,4 +18,4 @@ items:
     body: "Built the data infrastructure behind a published crypto-social-media study, ACM WebSci 2024."
 ---
 
-Full history and bullet-level detail in the résumé.
+The résumé has the full history and bullet-level detail.

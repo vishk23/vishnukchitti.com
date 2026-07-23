@@ -3,7 +3,7 @@ slug: add-mcp
 title: "One bad deep merge bricked every Codex chat"
 role: "Upstream contributor — add-mcp v2.0.0"
 period: "July 2026"
-summary: "I traced a configuration-corruption failure across Codex, Firecrawl CLI, and add-mcp, then shipped the atomic replacement fix across its TOML, JSON, and YAML writers."
+summary: "Why did one setup command brick every Codex chat? I traced the failure across Codex, Firecrawl CLI, and add-mcp, then shipped the atomic fix upstream."
 stack:
   - "TypeScript"
   - "TOML + JSON + YAML"
@@ -19,34 +19,34 @@ links:
 
 ## The failure
 
-I ran `firecrawl setup mcp`, and afterward OpenAI Codex could not create a single chat. The only clue was terse: `invalid configuration: url is not supported for stdio in mcp_servers.firecrawl`.
+I ran `firecrawl setup mcp`, and afterward OpenAI Codex could not create a single chat. What did a Firecrawl setup command have to do with every Codex chat? The only clue was terse: `invalid configuration: url is not supported for stdio in mcp_servers.firecrawl`.
 
 The Firecrawl entry in `~/.codex/config.toml` had become an impossible hybrid. It retained an old local `command`, `args`, and environment block while also gaining the new remote `type` and `url`. Codex classified it as stdio because `command` existed, rejected the remote URL, and treated the entire configuration file as invalid.
 
-Removing the stale stdio fields brought Codex back. That fixed my machine, but not the mechanism that corrupted it.
+Removing the stale stdio fields brought Codex back. Cool, but that only fixed my machine. What had actually corrupted the file?
 
 ## Following the write path
 
-Firecrawl CLI did not write the configuration itself. Its setup command invoked `add-mcp`, an installer used to configure MCP servers across roughly 15 coding agents and drawing about 200,000 weekly npm downloads at the time.
+Was Firecrawl writing bad TOML? Not directly. Its setup command invoked `add-mcp`, an installer used to configure MCP servers across roughly 15 coding agents and drawing about 200,000 weekly npm downloads at the time.
 
-All three of its configuration writers used the same recursive operation: deep-merge the incoming configuration into the existing file. That behavior was appropriate for preserving unrelated settings, but wrong at the server-entry boundary. Reinstalling a server under the same name merged two mutually exclusive transport shapes instead of replacing the old server.
+All three configuration writers did the same thing: deep-merge the incoming configuration into the existing file. That makes sense for unrelated settings. It makes no sense for two mutually exclusive server transports. Reinstalling a server under the same name kept both shapes instead of replacing the old one.
 
-I reduced the incident to a deterministic two-command reproduction against the published package. The generated TOML was byte-for-byte equivalent to the entry that had disabled Codex. The bug was also symmetric: either transport migration could leave fields from the other behind.
+I reduced the incident to a deterministic two-command reproduction against the published package. The generated TOML matched the entry that had disabled Codex byte for byte. At that point it was not a theory anymore. The bug was also symmetric: either transport migration could leave fields from the other behind.
 
 ## Why the quiet version was worse
 
-Codex failed loudly. JSON-based clients could accept the hybrid and continue launching the old local command while the user believed the remote server had been installed. That leaves stale code paths and potentially stale credentials in use without an error.
+Codex failed loudly, which was almost the better outcome. What happens in a JSON-based client that accepts the hybrid? It can keep launching the old local command while the user believes the remote server was installed. Stale code and potentially stale credentials stay in use, and nothing errors.
 
-The migration that triggered the bug was not unusual. MCP servers are moving between local stdio packages and hosted endpoints, and reinstalling under the same familiar name is exactly what an upgrade command should do.
+The trigger was not some weird edge case. MCP servers are moving between local stdio packages and hosted endpoints. Reinstalling under the same familiar name is exactly what an upgrade command should do.
 
 ## The fix
 
-My patch made server replacement atomic: before the normal file merge, delete any same-named server entry that the incoming configuration is about to write. Unrelated settings, sibling servers, and JSONC comments still survive; incompatible fields inside the replaced server do not.
+The rule became simple: merge the file, replace the server. Before the normal merge, remove any same-named server entry the incoming configuration is about to write. Sibling servers, unrelated settings, and JSONC comments survive. Stale transport fields do not.
 
-I wired the behavior through the TOML, JSON, and YAML writers and added red-on-main, green-with-fix regression coverage for Codex, Cursor, and Goose. While doing that, I found an existing unit-test file that was never registered in the package's CI scripts and fixed that path too.
+I wired that behavior through the TOML, JSON, and YAML writers. Then I proved the bug red on main and green with the fix for Codex, Cursor, and Goose. In addition, I found an existing unit-test file that was never registered in the package's CI scripts and fixed that too.
 
 ## Shipped upstream
 
 I opened [PR #83](https://github.com/neon-solutions/add-mcp/pull/83) with the reproduction, implementation, tests, and the precise behavior change. The maintainer consolidated it into [PR #86](https://github.com/neon-solutions/add-mcp/pull/86), and the fix landed about two days later as the atomic-server-replacement change in add-mcp v2.0.0. The merged commit credits me as a co-author, the changelog links my original PR, and the closing comment thanks me by name.
 
-The repository belongs to Neon, which is now part of Databricks. The important part to me is still the engineering route: fix the shared layer that owns the bug. A Firecrawl-only workaround would have protected one setup command; changing add-mcp protects every downstream installer and supported client using the same writer.
+The repository belongs to Neon, which is now part of Databricks. The thing is, a Firecrawl-only workaround would have protected one setup command. Fixing add-mcp protects every downstream installer and supported client using the same writer. Fix the layer that owns the bug.

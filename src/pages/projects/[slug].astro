@@ -59,25 +59,27 @@ const isNoop = entry.data.slug === 'noop';
         >
           <div class="beat" data-beat="1">
             <p>
-              <strong>Raw bytes.</strong> The WHOOP 5.0 streams undocumented
-              Bluetooth Low Energy. What arrives is an opaque buffer of bytes —
-              no schema, no field names, no help.
+              <strong>Raw bytes.</strong> What is the strap actually sending?
+              WHOOP 5.0 speaks undocumented Bluetooth Low Energy. What arrives
+              is an opaque buffer: no schema, no field names, no help.
             </p>
           </div>
 
           <div class="beat" data-beat="2">
             <p>
-              <strong>Finding the frame.</strong> Capture enough buffers and
-              structure emerges: fixed offsets, repeating strides. The bytes
-              resolve into signals the strap never meant to explain.
+              <strong>Save it first.</strong> I do not want to discard a signal
+              just because I cannot decode it yet. Capture enough buffers, line
+              them up, and the structure starts showing itself: fixed offsets,
+              repeating strides, values that move together.
             </p>
           </div>
 
           <div class="beat" data-beat="3">
             <p>
               <strong>The optical signal.</strong> One buffer carries the raw
-              v26 PPG — the green-light pulse of blood flow. The strap emits it
-              as a per-second burst, and I persist it past a single reading.
+              v26 PPG, the green-light pulse of blood flow. The strap emits it
+              as a one-second burst. I made sure the signal survives longer
+              than the reading that produced it.
             </p>
             <PpgBurst
               dataKey="ppg-hero"
@@ -87,12 +89,11 @@ const isNoop = entry.data.slug === 'noop';
 
           <div class="beat" data-beat="4">
             <p>
-              <strong>The whole optical front-end.</strong> The persisted burst
-              was one channel. The strap's raw optical offload banks{' '}
-              <em>six</em> — two green photodiodes, red, infrared, and two dark
-              references — twenty-five times a second. I decoded the 2,140-byte
-              buffer to the byte: the green LED drive current, the per-photodiode
-              offset DACs, every channel slot.
+              <strong>Was that the whole signal?</strong> No. The persisted burst
+              was one channel. The raw optical record carries <em>six</em>: two
+              green photodiodes, red, infrared, and two dark references, sampled
+              twenty-five times a second. I decoded the 2,140-byte buffer to the
+              byte, including the green LED drive current and every channel slot.
             </p>
             <ChannelToggle
               dataKey="optical-channels"
@@ -102,11 +103,11 @@ const isNoop = entry.data.slug === 'noop';
 
           <div class="beat" data-beat="5">
             <p>
-              <strong>A pulse from raw light.</strong> The green channel, over
-              time, is a clean cardiac pulse. Track it against the strap's own
-              heart rate across a resting window and it lands within a beat:
-              median error 1 bpm, every recovered reading within 6. Heart rate,
-              rebuilt from the light the sensor never exposed.
+              <strong>Does the decode tie out?</strong> The green channel becomes
+              a clean cardiac pulse over time. I compared it against the strap's
+              own heart rate across a resting window. Median error: 1 bpm. Every
+              recovered reading landed within 6. That is heart rate rebuilt from
+              raw light the sensor never exposed.
             </p>
             <WaveformScrub
               mode="scrub"
@@ -121,9 +122,9 @@ const isNoop = entry.data.slug === 'noop';
 
           <div class="beat" data-beat="6">
             <p>
-              <strong>Parsed motion.</strong> Another buffer resolves into six
-              axes of motion — the strap's own record of how the wrist moved,
-              decoded from bytes it never meant to explain.
+              <strong>Now corroborate it.</strong> Another buffer resolves into
+              six axes of motion. The optical signal says what the heart did;
+              the IMU says whether the wrist actually moved.
             </p>
             <ChannelToggle
               dataKey="imu-segment"
@@ -133,17 +134,17 @@ const isNoop = entry.data.slug === 'noop';
 
           <div class="beat" data-beat="7">
             <p>
-              <strong>From signal to sleep.</strong> Old scoring saw elevated
-              heart rate and called it WAKE — even on a dead-still wrist. That's
-              a false wake.
+              <strong>From signal to sleep.</strong> The old scoring saw elevated
+              heart rate and called it WAKE, even on a motionless wrist. That
+              does not make sense. A racing heart is not proof that I woke up.
             </p>
           </div>
 
           <div class="beat" data-beat="8">
             <p>
-              <strong>Corroboration.</strong> Cross-reference the IMU: no
-              motion, no wake. A racing heart on a motionless wrist stays asleep.
-              The hypnogram gets honest.
+              <strong>Corroboration.</strong> What does the IMU say? No motion,
+              no wake. The heart-rate call only survives when the independent
+              motion signal supports it. Now the hypnogram is honest.
             </p>
             <Hypnogram
               dataKey="hypnogram"
@@ -153,9 +154,9 @@ const isNoop = entry.data.slug === 'noop';
 
           <div class="beat" data-beat="9">
             <p>
-              <strong>Shipped upstream.</strong> All of it lands as merged pull
-              requests in the base app — 17 of them — not a fork nobody runs.
-              Real users, real straps, real derived signals like these:
+              <strong>Did it actually ship?</strong> Seventeen pull requests
+              merged into the base app. Not a private fork and not a demo. Real
+              users, real straps, and real signals like these:
             </p>
             <WaveformScrub
               mode="scrub"
